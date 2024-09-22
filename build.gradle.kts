@@ -36,7 +36,7 @@ testlogger { theme = ThemeType.MOCHA }
 dependencies {
     implementation(libs.spring.boot.starter.actuator)
     implementation(libs.spring.boot.starter.security)
-    implementation(libs.spring.boot.starter.webflux)
+    implementation(libs.spring.boot.starter.web)
 
     compileOnly(libs.lombok)
 

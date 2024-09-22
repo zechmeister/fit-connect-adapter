@@ -17,7 +17,7 @@ class ArchitectureFitnessTest {
     classes =
         new ClassFileImporter()
             .withImportOption(Predefined.DO_NOT_INCLUDE_TESTS)
-            .importPackages("de.bund.digitalservice.template");
+            .importPackages("de.bund.digitalservice.a2j");
   }
 
   @Test
