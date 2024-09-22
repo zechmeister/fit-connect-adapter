@@ -161,7 +161,7 @@ sonar {
     // NOTE: sonarqube picks up combined coverage correctly without further configuration from:
     // build/reports/jacoco/test/jacocoTestReport.xml
     properties {
-        property("sonar.projectKey", "digitalservicebund_java-application-template")
+        property("sonar.projectKey", "digitalservicebund_fit-connect-adapter")
         property("sonar.organization", "digitalservicebund")
         property("sonar.host.url", "https://sonarcloud.io")
     }

@@ -1,4 +1,4 @@
-package de.bund.digitalservice.template;
+package de.bund.digitalservice.a2j;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Tag;

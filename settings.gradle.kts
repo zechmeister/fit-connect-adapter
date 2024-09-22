@@ -1,1 +1,1 @@
-rootProject.name = "java-application-template"
+rootProject.name = "fit-connect-adapter"
