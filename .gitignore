@@ -41,3 +41,6 @@ lefthook-local.yml
 
 ### macOS ###
 .DS_Store
+
+fitConnectConfig.yaml
+!fitConnectConfig.yaml.example

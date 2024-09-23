@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import dev.fitko.fitconnect.api.config.ApplicationConfig;
 import dev.fitko.fitconnect.api.domain.model.submission.SentSubmission;
 import dev.fitko.fitconnect.api.domain.sender.SendableSubmission;
+import dev.fitko.fitconnect.api.exceptions.client.FitConnectSenderException;
 import dev.fitko.fitconnect.client.SenderClient;
 import dev.fitko.fitconnect.client.bootstrap.ClientFactory;
 import java.net.URI;
@@ -26,17 +27,18 @@ public class FitConnectSenderService implements SenderService {
     SendableSubmission submission =
         SendableSubmission.Builder()
             .setDestination(UUID.fromString("89126fd7-1069-46f1-9cdc-152037db95a9"))
-            .setServiceType("urn:de:fim:leika:leistung:99001001000000", "FIT Connect Demo")
+            .setServiceType("urn:de:fim:leika:leistung:99400048079000", "Simple Dummy Service")
             .setJsonData(
                 buildJSON(message),
-                URI.create("https://schema.fitko.de/fim/s00000096_1.0.schema.json"))
+                URI.create("urn:de:fim:leika:leistung:99400048079000"))
             .build();
 
-    SentSubmission sentSubmission = client.send(submission);
-
-    System.out.println("helllooo" + sentSubmission.toString());
-
-    return "Tried to send " + message;
+    try {
+      SentSubmission sentSubmission = client.send(submission);
+      return "sent submission: " + sentSubmission.toString();
+    } catch (FitConnectSenderException e) {
+      return "failed to submit: " + e.getMessage();
+    }
   }
 
   private String buildJSON(String message) {
