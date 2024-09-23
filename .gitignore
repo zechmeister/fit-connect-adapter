@@ -44,3 +44,4 @@ lefthook-local.yml
 
 fitConnectConfig.yaml
 !fitConnectConfig.yaml.example
+!**/test/resources/fitConnectConfig.yaml

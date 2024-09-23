@@ -28,9 +28,7 @@ public class FitConnectSenderService implements SenderService {
         SendableSubmission.Builder()
             .setDestination(UUID.fromString("89126fd7-1069-46f1-9cdc-152037db95a9"))
             .setServiceType("urn:de:fim:leika:leistung:99400048079000", "Simple Dummy Service")
-            .setJsonData(
-                buildJSON(message),
-                URI.create("urn:de:fim:leika:leistung:99400048079000"))
+            .setJsonData(buildJSON(message), URI.create("urn:de:fim:leika:leistung:99400048079000"))
             .build();
 
     try {

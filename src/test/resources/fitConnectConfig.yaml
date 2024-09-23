@@ -1,0 +1,5 @@
+senderConfig:
+  clientId: "client"
+  clientSecret: "s3cr3t"
+
+activeEnvironment: TEST
