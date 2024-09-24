@@ -1,0 +1,6 @@
+submission:
+  destination: 89126fd7-1069-46f1-9cdc-152037db95a9
+  serviceType:
+    urn: urn:de:fim:leika:leistung:99400048079000
+    name: Simple Dummy Service
+  jsonUri: urn:data

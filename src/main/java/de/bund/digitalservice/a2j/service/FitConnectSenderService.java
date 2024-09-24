@@ -11,11 +11,21 @@ import dev.fitko.fitconnect.client.SenderClient;
 import dev.fitko.fitconnect.client.bootstrap.ClientFactory;
 import java.net.URI;
 import java.util.UUID;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class FitConnectSenderService implements SenderService {
   private final SenderClient client;
+
+  @Value("${submission.destination}")
+  private String destinationUuid;
+  @Value("${submission.serviceType.urn}")
+  private String serviceUrn;
+  @Value("${submission.serviceType.name}")
+  private String serviceName;
+  @Value("${submission.jsonUri}")
+  private String jsonUri;
 
   public FitConnectSenderService(ApplicationConfig config) {
     this.client = ClientFactory.createSenderClient(config);
@@ -25,9 +35,9 @@ public class FitConnectSenderService implements SenderService {
   public String submit(SubmitRequest submitRequest) {
     SendableSubmission submission =
         SendableSubmission.Builder()
-            .setDestination(UUID.fromString("89126fd7-1069-46f1-9cdc-152037db95a9"))
-            .setServiceType("urn:de:fim:leika:leistung:99400048079000", "Simple Dummy Service")
-            .setJsonData(buildJSON(submitRequest.message()), URI.create("urn:data"))
+            .setDestination(UUID.fromString(destinationUuid))
+            .setServiceType(serviceUrn, serviceName)
+            .setJsonData(buildJSON(submitRequest.message()), URI.create(jsonUri))
             .build();
 
     try {
