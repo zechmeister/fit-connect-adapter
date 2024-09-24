@@ -22,13 +22,12 @@ public class FitConnectSenderService implements SenderService {
   }
 
   @Override
-  public String sendMessage(String message) {
-
+  public String submit(SubmitRequest submitRequest) {
     SendableSubmission submission =
         SendableSubmission.Builder()
             .setDestination(UUID.fromString("89126fd7-1069-46f1-9cdc-152037db95a9"))
             .setServiceType("urn:de:fim:leika:leistung:99400048079000", "Simple Dummy Service")
-            .setJsonData(buildJSON(message), URI.create("urn:de:fim:leika:leistung:99400048079000"))
+            .setJsonData(buildJSON(submitRequest.message()), URI.create("urn:data"))
             .build();
 
     try {

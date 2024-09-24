@@ -1,6 +1,7 @@
 package de.bund.digitalservice.a2j.controller;
 
 import de.bund.digitalservice.a2j.service.SenderService;
+import de.bund.digitalservice.a2j.service.SubmitRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,9 +18,9 @@ public class SenderController {
   }
 
   @PostMapping("/submit")
-  public ResponseEntity<String> submitMessage(@RequestBody String message) {
+  public ResponseEntity<String> submit(@RequestBody SubmitRequest submitRequest) {
     try {
-      String response = service.sendMessage(message);
+      String response = service.submit(submitRequest);
       return ResponseEntity.ok("Submission successful, content: " + response);
     } catch (Exception e) {
       return ResponseEntity.internalServerError().body("Error: " + e.getMessage());
