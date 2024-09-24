@@ -1,1 +1,1 @@
-rootProject.name = "fit-connect-adapter"
+rootProject.name = "a2j-erv-wrapper"
