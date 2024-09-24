@@ -20,10 +20,13 @@ public class FitConnectSenderService implements SenderService {
 
   @Value("${submission.destination}")
   private String destinationUuid;
+
   @Value("${submission.serviceType.urn}")
   private String serviceUrn;
+
   @Value("${submission.serviceType.name}")
   private String serviceName;
+
   @Value("${submission.jsonUri}")
   private String jsonUri;
 
