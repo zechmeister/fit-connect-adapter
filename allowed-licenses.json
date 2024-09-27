@@ -21,6 +21,12 @@
     {
       "moduleLicense": null,
       "moduleName": "com.fasterxml.jackson:jackson-bom"
+    },
+    {
+      "moduleLicense": "Bouncy Castle Licence"
+    },
+    {
+      "moduleLicense": "EUPL-1.2"
     }
   ]
 }
