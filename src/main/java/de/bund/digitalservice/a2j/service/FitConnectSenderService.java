@@ -1,8 +1,5 @@
 package de.bund.digitalservice.a2j.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import dev.fitko.fitconnect.api.config.ApplicationConfig;
 import dev.fitko.fitconnect.api.domain.model.submission.SentSubmission;
 import dev.fitko.fitconnect.api.domain.sender.SendableSubmission;
@@ -40,27 +37,15 @@ public class FitConnectSenderService implements SenderService {
         SendableSubmission.Builder()
             .setDestination(UUID.fromString(destinationUuid))
             .setServiceType(serviceUrn, serviceName)
-            .setJsonData(buildJSON(submitRequest.message()), URI.create(jsonUri))
+            .setJsonData(
+                DummyDataGenerator.generateDummyData(submitRequest.message()), URI.create(jsonUri))
             .build();
 
     try {
       SentSubmission sentSubmission = client.send(submission);
-      return "sent submission: " + sentSubmission.toString();
+      return "submission sent, caseId: " + sentSubmission.getCaseId();
     } catch (FitConnectSenderException e) {
       return "failed to submit: " + e.getMessage();
-    }
-  }
-
-  private String buildJSON(String message) {
-    ObjectMapper mapper = new ObjectMapper();
-
-    ObjectNode rootNode = mapper.createObjectNode();
-    rootNode.put("data", message);
-
-    try {
-      return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rootNode);
-    } catch (JsonProcessingException e) {
-      return "{\"error\":\"Failed to build JSON\"}";
     }
   }
 }
