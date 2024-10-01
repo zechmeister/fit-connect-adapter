@@ -4,3 +4,16 @@ submission:
     urn: urn:de:fim:leika:leistung:99400048079000
     name: Simple Dummy Service
   jsonUri: https://schema.fitko.de/fim/s17000717_1.0.schema.json
+
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  health:
+    livenessState:
+      enabled: true
+    readinessState:
+      enabled: true
+  server:
+    port: 8081
