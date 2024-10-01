@@ -18,7 +18,7 @@ public class SecurityConfig {
                 requests
                     .requestMatchers("/.well-known/security.txt")
                     .permitAll()
-                    .requestMatchers("/actuator/health")
+                    .requestMatchers("/actuator/health/readiness", "/actuator/health/liveness")
                     .permitAll()
                     .requestMatchers("/api/sender/**")
                     .permitAll()
