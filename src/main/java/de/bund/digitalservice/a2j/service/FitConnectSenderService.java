@@ -1,11 +1,9 @@
 package de.bund.digitalservice.a2j.service;
 
-import dev.fitko.fitconnect.api.config.ApplicationConfig;
 import dev.fitko.fitconnect.api.domain.model.submission.SentSubmission;
 import dev.fitko.fitconnect.api.domain.sender.SendableSubmission;
 import dev.fitko.fitconnect.api.exceptions.client.FitConnectSenderException;
 import dev.fitko.fitconnect.client.SenderClient;
-import dev.fitko.fitconnect.client.bootstrap.ClientFactory;
 import java.net.URI;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,21 +12,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class FitConnectSenderService implements SenderService {
   private final SenderClient client;
-
-  @Value("${submission.destination}")
   private String destinationUuid;
-
-  @Value("${submission.serviceType.urn}")
   private String serviceUrn;
-
-  @Value("${submission.serviceType.name}")
   private String serviceName;
-
-  @Value("${submission.jsonUri}")
   private String jsonUri;
 
-  public FitConnectSenderService(ApplicationConfig config) {
-    this.client = ClientFactory.createSenderClient(config);
+  public FitConnectSenderService(
+      SenderClient senderClient,
+      @Value("${submission.destination}") String destinationUuid,
+      @Value("${submission.serviceType.urn}") String serviceUrn,
+      @Value("${submission.serviceType.name}") String serviceName,
+      @Value("${submission.jsonUri}") String jsonUri) {
+    this.client = senderClient;
+    this.destinationUuid = destinationUuid;
+    this.serviceUrn = serviceUrn;
+    this.serviceName = serviceName;
+    this.jsonUri = jsonUri;
   }
 
   @Override

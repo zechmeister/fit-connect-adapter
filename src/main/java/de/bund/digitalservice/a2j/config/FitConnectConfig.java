@@ -1,7 +1,9 @@
 package de.bund.digitalservice.a2j.config;
 
 import dev.fitko.fitconnect.api.config.ApplicationConfig;
+import dev.fitko.fitconnect.client.SenderClient;
 import dev.fitko.fitconnect.client.bootstrap.ApplicationConfigLoader;
+import dev.fitko.fitconnect.client.bootstrap.ClientFactory;
 import java.io.IOException;
 import java.nio.file.Path;
 import org.springframework.context.annotation.Bean;
@@ -17,8 +19,10 @@ public class FitConnectConfig {
   }
 
   @Bean
-  public ApplicationConfig applicationConfig() throws IOException {
-    return ApplicationConfigLoader.loadConfigFromPath(
-        Path.of(resourceLoader.getResource("classpath:fitConnectConfig.yaml").getURI()));
+  public SenderClient senderClient() throws IOException {
+    ApplicationConfig config =
+        ApplicationConfigLoader.loadConfigFromPath(
+            Path.of(resourceLoader.getResource("classpath:fitConnectConfig.yaml").getURI()));
+    return ClientFactory.createSenderClient(config);
   }
 }
