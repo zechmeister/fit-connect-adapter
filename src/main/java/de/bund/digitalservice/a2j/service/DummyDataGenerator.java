@@ -6,6 +6,10 @@ import java.util.UUID;
 
 public class DummyDataGenerator {
 
+  private DummyDataGenerator() {
+    throw new IllegalStateException("Utility class");
+  }
+
   public static String generateDummyData(String message) {
     ObjectMapper mapper = new ObjectMapper();
     ObjectNode rootNode = mapper.createObjectNode();
