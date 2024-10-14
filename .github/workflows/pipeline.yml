@@ -201,3 +201,22 @@ jobs:
         if: ${{ failure() && github.ref == 'refs/heads/main' }}
         with:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  deploy-staging:
+    if: github.ref == 'refs/heads/main'
+    needs: [build-and-push-image]
+    runs-on: ubuntu-latest
+    environment: staging_erv_wrapper
+    steps:
+      - name: Deploy new staging image
+        uses: digitalservicebund/argocd-deploy@4fac1bb67c92ed168f6d9b22f8779ce241a9e412 # v1.0.0
+        with:
+          environment: staging
+          version: ${{ needs.build-and-push-image.outputs.version }}
+          deploying_repo: a2j-erv-wrapper
+          infra_repo: a2j-rechtsantragstelle-infra
+          deploy_key: ${{ secrets.DEPLOY_KEY }}
+          app: a2j-rast-staging
+          argocd_pipeline_password: ${{ secrets.ARGOCD_PIPELINE_PASSWORD }}
+          argocd_server: ${{ secrets.ARGOCD_SERVER }}
+          argocd_sync_timeout: 300
