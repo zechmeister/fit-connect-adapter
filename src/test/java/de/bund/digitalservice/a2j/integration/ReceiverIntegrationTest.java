@@ -18,7 +18,7 @@ public class ReceiverIntegrationTest {
   @Autowired private MockMvc mockMvc;
 
   @Test
-  void shouldExposeSecurityTxt() throws Exception {
+  void shouldExposeCallback() throws Exception {
     mockMvc.perform(post("/callbacks/fit-connect")).andExpect(status().isOk());
   }
 }
