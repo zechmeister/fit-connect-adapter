@@ -13,7 +13,8 @@ public class SecurityConfig {
 
   @Bean
   public SecurityFilterChain springSecurityWebFilterChain(HttpSecurity http) throws Exception {
-    return http.csrf(csrf -> csrf.ignoringRequestMatchers("/api/sender/submit"))
+    return http.csrf(
+            csrf -> csrf.ignoringRequestMatchers("/api/sender/submit", "/callbacks/fit-connect"))
         .authorizeHttpRequests(
             requests ->
                 requests
@@ -22,6 +23,8 @@ public class SecurityConfig {
                     .requestMatchers("/actuator/health/readiness", "/actuator/health/liveness")
                     .permitAll()
                     .requestMatchers("/api/sender/**")
+                    .permitAll()
+                    .requestMatchers("/callbacks/fit-connect")
                     .permitAll()
                     .anyRequest()
                     .denyAll())
