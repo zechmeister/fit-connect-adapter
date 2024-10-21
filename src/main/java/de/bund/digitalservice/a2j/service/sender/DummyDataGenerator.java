@@ -1,4 +1,4 @@
-package de.bund.digitalservice.a2j.service;
+package de.bund.digitalservice.a2j.service.sender;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;

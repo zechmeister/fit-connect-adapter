@@ -1,4 +1,4 @@
-package de.bund.digitalservice.a2j.service;
+package de.bund.digitalservice.a2j.service.sender;
 
 import dev.fitko.fitconnect.api.domain.model.submission.SentSubmission;
 import dev.fitko.fitconnect.api.domain.sender.SendableSubmission;

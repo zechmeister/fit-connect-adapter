@@ -1,4 +1,4 @@
-package de.bund.digitalservice.a2j.service;
+package de.bund.digitalservice.a2j.service.sender;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;

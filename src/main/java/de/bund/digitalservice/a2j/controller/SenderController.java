@@ -1,7 +1,7 @@
 package de.bund.digitalservice.a2j.controller;
 
-import de.bund.digitalservice.a2j.service.SenderService;
-import de.bund.digitalservice.a2j.service.SubmitRequest;
+import de.bund.digitalservice.a2j.service.sender.SenderService;
+import de.bund.digitalservice.a2j.service.sender.SubmitRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

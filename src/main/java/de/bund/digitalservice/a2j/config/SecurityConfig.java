@@ -1,6 +1,7 @@
 package de.bund.digitalservice.a2j.config;
 
-import de.bund.digitalservice.a2j.security.HmacVerificationFilter;
+import de.bund.digitalservice.a2j.security.CallbackVerificationFilter;
+import de.bund.digitalservice.a2j.service.receiver.CallbackVerificationService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,6 +13,11 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+  private final CallbackVerificationService callbackVerificationService;
+
+  public SecurityConfig(CallbackVerificationService callbackVerificationService) {
+    this.callbackVerificationService = callbackVerificationService;
+  }
 
   @Bean
   public SecurityFilterChain springSecurityWebFilterChain(HttpSecurity http) throws Exception {
@@ -30,7 +36,9 @@ public class SecurityConfig {
                     .permitAll()
                     .anyRequest()
                     .denyAll())
-        .addFilterAfter(new HmacVerificationFilter(), BasicAuthenticationFilter.class)
+        .addFilterAfter(
+            new CallbackVerificationFilter(callbackVerificationService),
+            BasicAuthenticationFilter.class)
         .build();
   }
 
