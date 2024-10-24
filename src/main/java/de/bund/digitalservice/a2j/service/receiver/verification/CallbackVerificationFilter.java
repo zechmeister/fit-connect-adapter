@@ -1,6 +1,5 @@
-package de.bund.digitalservice.a2j.security;
+package de.bund.digitalservice.a2j.service.receiver.verification;
 
-import de.bund.digitalservice.a2j.service.receiver.CallbackVerificationService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

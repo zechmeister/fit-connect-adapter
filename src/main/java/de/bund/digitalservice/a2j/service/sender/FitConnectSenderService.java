@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class FitConnectSenderService implements SenderService {
   private final SenderClient client;
-  private String destinationUuid;
-  private String serviceUrn;
-  private String serviceName;
-  private String jsonUri;
+  private final String destinationUuid;
+  private final String serviceUrn;
+  private final String serviceName;
+  private final String jsonUri;
 
   public FitConnectSenderService(
       SenderClient senderClient,

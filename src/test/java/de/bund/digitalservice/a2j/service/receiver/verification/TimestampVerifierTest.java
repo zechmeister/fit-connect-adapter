@@ -1,4 +1,4 @@
-package de.bund.digitalservice.a2j.service.receiver;
+package de.bund.digitalservice.a2j.service.receiver.verification;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -9,35 +9,33 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-public class CallbackVerificationServiceTest {
-  private CallbackVerificationService service;
+public class TimestampVerifierTest {
+  private TimestampVerifier verifier;
 
   @BeforeEach
   void setup() {
-    this.service = new CallbackVerificationService();
+    this.verifier = new TimestampVerifier();
   }
 
   @Test
-  void testValidCallback_withValidTimestamp() {
+  void testVerify_withValidTimestamp() {
     long currentTime = Instant.now().getEpochSecond();
     String validTimestamp = String.valueOf(currentTime);
 
-    assertTrue(
-        service.isValidCallback("auth", validTimestamp, "body"),
-        "Callback should be valid with current timestamp");
+    assertTrue(verifier.verify(validTimestamp), "Callback should be valid with current timestamp");
   }
 
   @ParameterizedTest
   @ValueSource(strings = {"invalid", "", "-12334554121", "99999999999999999"})
-  void testValidCallback_withMalformedTimestamp(String timestamp) {
-    assertFalse(service.isValidCallback("auth", timestamp, "body"));
+  void testVerify_withMalformedTimestamp(String timestamp) {
+    assertFalse(verifier.verify(timestamp));
   }
 
   @ParameterizedTest
   @ValueSource(longs = {301, 400, 6000})
-  void testValidCallback_withOldTimestamp(long offset) {
+  void testVerify_withOldTimestamp(long offset) {
     long currentTime = Instant.now().getEpochSecond();
     String timestamp = String.valueOf(currentTime - offset);
-    assertFalse(service.isValidCallback("auth", timestamp, "body"));
+    assertFalse(verifier.verify(timestamp));
   }
 }
