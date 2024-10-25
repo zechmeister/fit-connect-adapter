@@ -1,0 +1,7 @@
+spring:
+  cloud:
+    kubernetes:
+      secrets:
+        enabled: true
+        fail-fast: true
+        paths: /etc/secrets
