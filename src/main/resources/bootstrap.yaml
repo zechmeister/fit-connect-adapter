@@ -5,3 +5,5 @@ spring:
         enabled: true
         fail-fast: true
         paths: /etc/secrets
+      config:
+        enabled: false
