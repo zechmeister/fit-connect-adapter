@@ -34,7 +34,7 @@ public class CallbackVerificationFilter extends OncePerRequestFilter {
 
     if (!senderClient
         .validateCallback(
-            request.getHeader("callback-athentication"),
+            request.getHeader("callback-authentication"),
             Long.parseLong(request.getHeader("callback-timestamp")),
             request.getReader().lines().reduce("", String::concat),
             callbackSecret)
