@@ -1,7 +1,6 @@
 package de.bund.digitalservice.a2j.config;
 
-import de.bund.digitalservice.a2j.service.receiver.verification.CallbackVerificationFilter;
-import de.bund.digitalservice.a2j.service.receiver.verification.CallbackVerificationService;
+import de.bund.digitalservice.a2j.service.receiver.CallbackVerificationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,10 +12,11 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-  private final CallbackVerificationService callbackVerificationService;
 
-  public SecurityConfig(CallbackVerificationService callbackVerificationService) {
-    this.callbackVerificationService = callbackVerificationService;
+  private final CallbackVerificationFilter callbackVerificationFilter;
+
+  public SecurityConfig(CallbackVerificationFilter callbackVerificationFilter) {
+    this.callbackVerificationFilter = callbackVerificationFilter;
   }
 
   @Bean
@@ -36,9 +36,7 @@ public class SecurityConfig {
                     .permitAll()
                     .anyRequest()
                     .denyAll())
-        .addFilterAfter(
-            new CallbackVerificationFilter(callbackVerificationService),
-            BasicAuthenticationFilter.class)
+        .addFilterAfter(callbackVerificationFilter, BasicAuthenticationFilter.class)
         .build();
   }
 

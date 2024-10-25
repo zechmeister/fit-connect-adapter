@@ -37,6 +37,7 @@ dependencies {
     implementation(libs.spring.boot.starter.actuator)
     implementation(libs.spring.boot.starter.security)
     implementation(libs.spring.boot.starter.web)
+    implementation("org.springframework.cloud:spring-cloud-starter-kubernetes-client-config:3.1.3")
     implementation(libs.fitko.fitconnect.sdk)
 
     compileOnly(libs.lombok)
