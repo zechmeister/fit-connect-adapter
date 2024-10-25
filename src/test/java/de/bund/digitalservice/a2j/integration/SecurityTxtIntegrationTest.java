@@ -1,4 +1,4 @@
-package de.bund.digitalservice.a2j;
+package de.bund.digitalservice.a2j.integration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

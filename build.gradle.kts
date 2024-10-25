@@ -60,6 +60,7 @@ tasks {
         useJUnitPlatform {
             includeTags("integration")
         }
+        systemProperty("spring.profiles.active", "test")
 
         // So that running integration test require running unit tests first,
         // and we won"t even attempt running integration tests when there are
