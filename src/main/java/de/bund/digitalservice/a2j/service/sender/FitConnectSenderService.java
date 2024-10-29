@@ -6,6 +6,8 @@ import dev.fitko.fitconnect.api.exceptions.client.FitConnectSenderException;
 import dev.fitko.fitconnect.client.SenderClient;
 import java.net.URI;
 import java.util.UUID;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +18,14 @@ public class FitConnectSenderService implements SenderService {
   private final String serviceUrn;
   private final String serviceName;
   private final String jsonUri;
+  private final Logger logger = LoggerFactory.getLogger(FitConnectSenderService.class);
 
   public FitConnectSenderService(
       SenderClient senderClient,
-      @Value("${submission.destination}") String destinationUuid,
-      @Value("${submission.serviceType.urn}") String serviceUrn,
-      @Value("${submission.serviceType.name}") String serviceName,
-      @Value("${submission.jsonUri}") String jsonUri) {
+      @Value("${fitConnect.submission.destination}") String destinationUuid,
+      @Value("${fitConnect.submission.serviceType.urn}") String serviceUrn,
+      @Value("${fitConnect.submission.serviceType.name}") String serviceName,
+      @Value("${fitConnect.submission.jsonUri}") String jsonUri) {
     this.client = senderClient;
     this.destinationUuid = destinationUuid;
     this.serviceUrn = serviceUrn;
@@ -42,8 +45,10 @@ public class FitConnectSenderService implements SenderService {
 
     try {
       SentSubmission sentSubmission = client.send(submission);
+      logger.info("Submission sent, caseId: " + sentSubmission.getCaseId());
       return "submission sent, caseId: " + sentSubmission.getCaseId();
     } catch (FitConnectSenderException e) {
+      logger.error("failed to submit request: " + e.getMessage());
       return "failed to submit: " + e.getMessage();
     }
   }

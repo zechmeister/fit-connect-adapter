@@ -1,28 +1,81 @@
 package de.bund.digitalservice.a2j.config;
 
+import com.nimbusds.jose.jwk.JWK;
 import dev.fitko.fitconnect.api.config.ApplicationConfig;
+import dev.fitko.fitconnect.api.config.SenderConfig;
+import dev.fitko.fitconnect.api.config.SubscriberConfig;
+import dev.fitko.fitconnect.api.config.defaults.Environments;
 import dev.fitko.fitconnect.client.SenderClient;
-import dev.fitko.fitconnect.client.bootstrap.ApplicationConfigLoader;
+import dev.fitko.fitconnect.client.SubscriberClient;
 import dev.fitko.fitconnect.client.bootstrap.ClientFactory;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.ParseException;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.ClassPathResource;
 
 @Configuration
 public class FitConnectConfig {
-  private final ResourceLoader resourceLoader;
+  @Value("${fitConnect.sender.clientId}")
+  String senderClientId;
 
-  public FitConnectConfig(ResourceLoader resourceLoader) {
-    this.resourceLoader = resourceLoader;
+  @Value("${fitConnect.sender.clientSecret}")
+  String senderClientSecret;
+
+  @Value("${fitConnect.subscriber.clientId}")
+  String subscriberClientId;
+
+  @Value("${fitConnect.subscriber.clientSecret}")
+  String subscriberClientSecret;
+
+  @Value("${fitConnect.subscriber.privateDecryptionKeyPath}")
+  String subscriberPrivateDecryptionKeyPath;
+
+  @Value("${fitConnect.subscriber.privateSigningKeyPath}")
+  String subscriberPrivateSigningKeyPath;
+
+  @Bean
+  public SenderClient senderClient() {
+    SenderConfig senderConfig =
+        SenderConfig.builder().clientId(senderClientId).clientSecret(senderClientSecret).build();
+
+    ApplicationConfig config =
+        ApplicationConfig.builder()
+            .senderConfig(senderConfig)
+            .activeEnvironment(Environments.TEST.getEnvironmentName())
+            .build();
+
+    return ClientFactory.createSenderClient(config);
   }
 
   @Bean
-  public SenderClient senderClient() throws IOException {
+  public SubscriberClient subscriberClient() throws IOException, ParseException {
+    SubscriberConfig subscriberConfig =
+        SubscriberConfig.builder()
+            .clientId(subscriberClientId)
+            .clientSecret(subscriberClientSecret)
+            .privateDecryptionKeys(List.of(loadKey(subscriberPrivateDecryptionKeyPath)))
+            .privateSigningKey(loadKey(subscriberPrivateSigningKeyPath))
+            .build();
+
     ApplicationConfig config =
-        ApplicationConfigLoader.loadConfigFromPath(
-            Path.of(resourceLoader.getResource("classpath:fitConnectConfig.yaml").getURI()));
-    return ClientFactory.createSenderClient(config);
+        ApplicationConfig.builder()
+            .subscriberConfig(subscriberConfig)
+            .activeEnvironment(Environments.TEST.getEnvironmentName())
+            .build();
+
+    return ClientFactory.createSubscriberClient(config);
+  }
+
+  private JWK loadKey(String filePath) throws IOException, ParseException {
+    Path path = Paths.get(new ClassPathResource(filePath).getURI());
+    String jwkContent = Files.readString(path);
+
+    return JWK.parse(jwkContent);
   }
 }

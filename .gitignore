@@ -42,6 +42,7 @@ lefthook-local.yml
 ### macOS ###
 .DS_Store
 
-fitConnectConfig.yaml
-!fitConnectConfig.yaml.example
-!**/test/resources/fitConnectConfig.yaml
+### fit-connect ###
+signing_key.json
+decryption_key.json
+application-local.yaml

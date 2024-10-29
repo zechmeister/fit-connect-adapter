@@ -38,12 +38,12 @@ class ArchitectureFitnessTest {
         .resideInAPackage("de.bund.digitalservice.a2j.service.sender..")
         .should()
         .dependOnClassesThat()
-        .resideInAnyPackage("de.bund.digitalservice.a2j.service.receiver..")
+        .resideInAnyPackage("de.bund.digitalservice.a2j.service.subscriber..")
         .check(classes);
 
     ArchRuleDefinition.noClasses()
         .that()
-        .resideInAPackage("de.bund.digitalservice.a2j.service.receiver..")
+        .resideInAPackage("de.bund.digitalservice.a2j.service.subscriber..")
         .should()
         .dependOnClassesThat()
         .resideInAnyPackage("de.bund.digitalservice.a2j.service.sender..")

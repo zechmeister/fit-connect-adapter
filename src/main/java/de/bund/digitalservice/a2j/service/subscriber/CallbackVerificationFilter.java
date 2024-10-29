@@ -1,4 +1,4 @@
-package de.bund.digitalservice.a2j.service.receiver;
+package de.bund.digitalservice.a2j.service.subscriber;
 
 import dev.fitko.fitconnect.client.SenderClient;
 import jakarta.servlet.FilterChain;
@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -15,9 +17,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class CallbackVerificationFilter extends OncePerRequestFilter {
   private final SenderClient senderClient;
   private final String callbackSecret;
+  private final Logger logger = LoggerFactory.getLogger(CallbackVerificationFilter.class);
 
   public CallbackVerificationFilter(
-      SenderClient senderClient, @Value("${callbackSecret}") String callbackSecret) {
+      SenderClient senderClient, @Value("${fitConnect.callbackSecret}") String callbackSecret) {
     this.senderClient = senderClient;
     this.callbackSecret = callbackSecret;
   }
@@ -40,7 +43,7 @@ public class CallbackVerificationFilter extends OncePerRequestFilter {
             callbackSecret)
         .isValid()) {
 
-      System.out.println("Received fit-connect callback, returned 401");
+      logger.info("Received invalid fit-connect callback");
       response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
       return;
     }
