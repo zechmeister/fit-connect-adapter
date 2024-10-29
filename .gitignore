@@ -43,6 +43,6 @@ lefthook-local.yml
 .DS_Store
 
 ### fit-connect ###
+application-local.yaml
 signing_key.json
 decryption_key.json
-application-local.yaml
