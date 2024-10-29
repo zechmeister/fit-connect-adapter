@@ -11,16 +11,18 @@ import dev.fitko.fitconnect.client.bootstrap.ClientFactory;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 
 @Configuration
 public class FitConnectConfig {
+  private final ResourceLoader resourceLoader;
+
   @Value("${fitConnect.sender.clientId}")
   String senderClientId;
 
@@ -38,6 +40,10 @@ public class FitConnectConfig {
 
   @Value("${fitConnect.subscriber.privateSigningKeyPath}")
   String subscriberPrivateSigningKeyPath;
+
+  public FitConnectConfig(ResourceLoader resourceLoader) {
+    this.resourceLoader = resourceLoader;
+  }
 
   @Bean
   public SenderClient senderClient() {
@@ -73,7 +79,8 @@ public class FitConnectConfig {
   }
 
   private JWK loadKey(String filePath) throws IOException, ParseException {
-    Path path = Paths.get(new ClassPathResource(filePath).getURI());
+    Resource resource = resourceLoader.getResource(filePath);
+    Path path = resource.getFile().toPath();
     String jwkContent = Files.readString(path);
 
     return JWK.parse(jwkContent);
