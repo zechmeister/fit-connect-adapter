@@ -43,8 +43,8 @@ public class CallbackVerificationFilter extends OncePerRequestFilter {
     String requestBody =
         new String(wrappedRequest.getContentAsByteArray(), request.getCharacterEncoding());
 
-    ValidationResult result = senderClient
-        .validateCallback(
+    ValidationResult result =
+        senderClient.validateCallback(
             request.getHeader("callback-authentication"),
             Long.parseLong(request.getHeader("callback-timestamp")),
             requestBody,
