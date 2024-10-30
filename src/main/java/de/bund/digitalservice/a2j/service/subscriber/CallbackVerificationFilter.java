@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.util.ContentCachingRequestWrapper;
 
 @Component
 public class CallbackVerificationFilter extends OncePerRequestFilter {
@@ -32,14 +33,20 @@ public class CallbackVerificationFilter extends OncePerRequestFilter {
 
   @Override
   protected void doFilterInternal(
-      HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain chain)
+      @NotNull HttpServletRequest request,
+      @NotNull HttpServletResponse response,
+      @NotNull FilterChain chain)
       throws ServletException, IOException {
+
+    ContentCachingRequestWrapper wrappedRequest = new ContentCachingRequestWrapper(request);
+    String requestBody =
+        new String(wrappedRequest.getContentAsByteArray(), request.getCharacterEncoding());
 
     if (!senderClient
         .validateCallback(
             request.getHeader("callback-authentication"),
             Long.parseLong(request.getHeader("callback-timestamp")),
-            request.getReader().lines().reduce("", String::concat),
+            requestBody,
             callbackSecret)
         .isValid()) {
 
