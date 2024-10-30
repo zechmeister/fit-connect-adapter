@@ -1,5 +1,6 @@
 package de.bund.digitalservice.a2j.service.subscriber;
 
+import dev.fitko.fitconnect.api.domain.validation.ValidationResult;
 import dev.fitko.fitconnect.client.SenderClient;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -42,15 +43,17 @@ public class CallbackVerificationFilter extends OncePerRequestFilter {
     String requestBody =
         new String(wrappedRequest.getContentAsByteArray(), request.getCharacterEncoding());
 
-    if (!senderClient
+    ValidationResult result = senderClient
         .validateCallback(
             request.getHeader("callback-authentication"),
             Long.parseLong(request.getHeader("callback-timestamp")),
             requestBody,
-            callbackSecret)
-        .isValid()) {
+            callbackSecret);
 
+    if (!result.isValid()) {
       logger.info("Received invalid fit-connect callback");
+      logger.info(result.getProblems().toString());
+      logger.info(result.getError().getMessage());
       response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
       return;
     }
