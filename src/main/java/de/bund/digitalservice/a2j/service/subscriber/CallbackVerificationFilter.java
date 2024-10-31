@@ -61,6 +61,6 @@ public class CallbackVerificationFilter extends OncePerRequestFilter {
       return;
     }
 
-    chain.doFilter(request, response);
+    chain.doFilter(wrappedRequest, response);
   }
 }
