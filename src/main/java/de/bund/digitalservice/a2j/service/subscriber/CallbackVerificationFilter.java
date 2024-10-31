@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,8 +41,7 @@ public class CallbackVerificationFilter extends OncePerRequestFilter {
       throws ServletException, IOException {
 
     ContentCachingRequestWrapper wrappedRequest = new ContentCachingRequestWrapper(request);
-    String requestBody =
-        new String(wrappedRequest.getContentAsByteArray(), request.getCharacterEncoding());
+    String requestBody = wrappedRequest.getReader().lines().collect(Collectors.joining("\n"));
 
     String hmac = request.getHeader("callback-authentication");
 
