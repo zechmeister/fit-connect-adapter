@@ -1,7 +1,7 @@
 package de.bund.digitalservice.a2j.controller;
 
 import de.bund.digitalservice.a2j.service.subscriber.SubscriberService;
-import dev.fitko.fitconnect.api.domain.model.submission.SubmissionForPickup;
+import dev.fitko.fitconnect.api.domain.model.callback.NewSubmissionsCallback;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +16,7 @@ public class SubscriberController {
   }
 
   @PostMapping("callbacks/fit-connect")
-  public void newSubmission(@RequestBody SubmissionForPickup submission) {
-    service.pickUpSubmission(submission);
+  public void newSubmission(@RequestBody NewSubmissionsCallback callback) {
+    service.pickUpSubmission(callback.getSubmissions().getFirst());
   }
 }
