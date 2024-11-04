@@ -1,4 +1,4 @@
-package de.bund.digitalservice.a2j.service.subscriber;
+package de.bund.digitalservice.a2j.security;
 
 import dev.fitko.fitconnect.api.domain.validation.ValidationResult;
 import dev.fitko.fitconnect.client.SenderClient;
@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.util.ContentCachingRequestWrapper;
 
 @Component
 public class CallbackVerificationFilter extends OncePerRequestFilter {
@@ -40,22 +39,19 @@ public class CallbackVerificationFilter extends OncePerRequestFilter {
       @NotNull FilterChain chain)
       throws ServletException, IOException {
 
-    ContentCachingRequestWrapper wrappedRequest = new ContentCachingRequestWrapper(request);
-    String requestBody = wrappedRequest.getReader().lines().collect(Collectors.joining("\n"));
+    CachedBodyServletRequest wrappedRequest = new CachedBodyServletRequest(request);
 
     String hmac = request.getHeader("callback-authentication");
+    String body = wrappedRequest.getReader().lines().collect(Collectors.joining("\n"));
 
     ValidationResult result =
         senderClient.validateCallback(
-            hmac,
-            Long.parseLong(request.getHeader("callback-timestamp")),
-            requestBody,
-            callbackSecret);
+            hmac, Long.parseLong(request.getHeader("callback-timestamp")), body, callbackSecret);
 
     if (!result.isValid()) {
       logger.info("Received invalid fit-connect callback");
       logger.info("hmac: " + hmac);
-      logger.info("body: " + requestBody);
+      logger.info("body: " + body);
       logger.info("Validation Error: " + result.getError().getMessage());
       response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
       return;

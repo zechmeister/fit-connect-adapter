@@ -1,6 +1,6 @@
 package de.bund.digitalservice.a2j.config;
 
-import de.bund.digitalservice.a2j.service.subscriber.CallbackVerificationFilter;
+import de.bund.digitalservice.a2j.security.CallbackVerificationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
