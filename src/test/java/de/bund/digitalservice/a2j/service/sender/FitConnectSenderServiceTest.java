@@ -17,13 +17,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
-public class FitConnectSenderServiceTest {
+class FitConnectSenderServiceTest {
   @MockBean private SenderClient mockClient;
   @Mock private SentSubmission mockSentSubmission;
   private FitConnectSenderService service;
 
   @BeforeEach()
-  public void setup() {
+  void setup() {
     service =
         new FitConnectSenderService(
             mockClient,
@@ -34,7 +34,7 @@ public class FitConnectSenderServiceTest {
   }
 
   @Test
-  public void submitWithSuccess() {
+  void submitWithSuccess() {
     UUID mockCaseId = UUID.fromString("45ae11f6-8e01-47c3-90af-678ec59c4a01");
     when(mockSentSubmission.getCaseId()).thenReturn(mockCaseId);
     when(mockClient.send(any(SendableSubmission.class))).thenReturn(mockSentSubmission);
@@ -44,7 +44,7 @@ public class FitConnectSenderServiceTest {
   }
 
   @Test
-  public void submitWithoutSuccess() {
+  void submitWithoutSuccess() {
     String errorMessage = "test error";
     when(mockClient.send(any(SendableSubmission.class)))
         .thenThrow(new FitConnectSenderException(errorMessage));

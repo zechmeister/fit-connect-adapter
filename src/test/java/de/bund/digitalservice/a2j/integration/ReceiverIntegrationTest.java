@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @Tag("integration")
-public class ReceiverIntegrationTest {
+class ReceiverIntegrationTest {
   @Autowired private MockMvc mockMvc;
   @MockBean SubscriberClient subscriberClient;
 
