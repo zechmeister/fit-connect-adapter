@@ -19,7 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class CallbackVerificationFilter extends OncePerRequestFilter {
   private final SenderClient senderClient;
   private final String callbackSecret;
-  private static final Logger logger = LoggerFactory.getLogger(CallbackVerificationFilter.class);
+  private static final Logger filterLogger = LoggerFactory.getLogger(CallbackVerificationFilter.class);
 
   public CallbackVerificationFilter(
       SenderClient senderClient, @Value("${fitConnect.callbackSecret}") String callbackSecret) {
@@ -49,7 +49,7 @@ public class CallbackVerificationFilter extends OncePerRequestFilter {
             hmac, Long.parseLong(request.getHeader("callback-timestamp")), body, callbackSecret);
 
     if (!result.isValid()) {
-      logger.info(
+      filterLogger.info(
           "Received invalid fit-connect callback. Validation Error: {}",
           result.getError().getMessage());
       response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
