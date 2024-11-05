@@ -5,6 +5,7 @@ import jakarta.servlet.ServletInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 
 public class CachedBodyServletInputStream extends ServletInputStream {
 
@@ -24,7 +25,7 @@ public class CachedBodyServletInputStream extends ServletInputStream {
     try {
       return cachedBodyInputStream.available() == 0;
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new UncheckedIOException(e);
     }
   }
 
