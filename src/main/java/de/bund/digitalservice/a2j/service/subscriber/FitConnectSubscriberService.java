@@ -19,9 +19,9 @@ public class FitConnectSubscriberService implements SubscriberService {
 
   public void pickUpSubmission(SubmissionForPickup submissionForPickup) {
     ReceivedSubmission receivedSubmission = client.requestSubmission(submissionForPickup);
-    logger.info("Submission requested. SubmissionId: " + submissionForPickup.getSubmissionId());
+    logger.info("Submission requested. SubmissionId: {}", submissionForPickup.getSubmissionId());
 
     receivedSubmission.acceptSubmission();
-    logger.info("Submission accepted. CaseId: " + receivedSubmission.getCaseId());
+    logger.info("Submission accepted. CaseId: {}", receivedSubmission.getCaseId());
   }
 }

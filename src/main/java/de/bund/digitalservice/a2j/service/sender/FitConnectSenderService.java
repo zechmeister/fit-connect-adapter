@@ -45,10 +45,10 @@ public class FitConnectSenderService implements SenderService {
 
     try {
       SentSubmission sentSubmission = client.send(submission);
-      logger.info("Submission sent, caseId: " + sentSubmission.getCaseId());
+      logger.info("Submission sent, caseId: {}", sentSubmission.getCaseId());
       return "submission sent, caseId: " + sentSubmission.getCaseId();
     } catch (FitConnectSenderException e) {
-      logger.error("failed to submit request: " + e.getMessage());
+      logger.error("failed to submit request: {}", e.getMessage());
       return "failed to submit: " + e.getMessage();
     }
   }

@@ -49,10 +49,9 @@ public class CallbackVerificationFilter extends OncePerRequestFilter {
             hmac, Long.parseLong(request.getHeader("callback-timestamp")), body, callbackSecret);
 
     if (!result.isValid()) {
-      logger.info("Received invalid fit-connect callback");
-      logger.info("hmac: " + hmac);
-      logger.info("body: " + body);
-      logger.info("Validation Error: " + result.getError().getMessage());
+      logger.info(
+          "Received invalid fit-connect callback. Validation Error: {}",
+          result.getError().getMessage());
       response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
       return;
     }
