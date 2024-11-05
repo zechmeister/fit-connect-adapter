@@ -19,7 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class CallbackVerificationFilter extends OncePerRequestFilter {
   private final SenderClient senderClient;
   private final String callbackSecret;
-  private final Logger logger = LoggerFactory.getLogger(CallbackVerificationFilter.class);
+  private static final Logger logger = LoggerFactory.getLogger(CallbackVerificationFilter.class);
 
   public CallbackVerificationFilter(
       SenderClient senderClient, @Value("${fitConnect.callbackSecret}") String callbackSecret) {

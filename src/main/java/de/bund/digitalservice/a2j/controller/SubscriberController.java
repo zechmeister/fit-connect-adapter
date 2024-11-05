@@ -17,6 +17,6 @@ public class SubscriberController {
 
   @PostMapping("callbacks/fit-connect")
   public void newSubmission(@RequestBody NewSubmissionsCallback callback) {
-    service.pickUpSubmission(callback.getSubmissions().getFirst());
+    callback.getSubmissions().forEach(service::pickUpSubmission);
   }
 }

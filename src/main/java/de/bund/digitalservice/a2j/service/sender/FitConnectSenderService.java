@@ -18,7 +18,7 @@ public class FitConnectSenderService implements SenderService {
   private final String serviceUrn;
   private final String serviceName;
   private final String jsonUri;
-  private final Logger logger = LoggerFactory.getLogger(FitConnectSenderService.class);
+  private static final Logger logger = LoggerFactory.getLogger(FitConnectSenderService.class);
 
   public FitConnectSenderService(
       SenderClient senderClient,
