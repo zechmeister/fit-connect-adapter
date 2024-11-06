@@ -22,7 +22,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
-public class CallbackVerificationFilterTest {
+class CallbackVerificationFilterTest {
 
   private CallbackVerificationFilter filter;
   private MockHttpServletRequest request;
