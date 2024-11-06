@@ -34,7 +34,7 @@ class FitConnectSenderServiceTest {
   }
 
   @Test
-  void submitWithSuccess() {
+  void testSubmitWithSuccess() {
     UUID mockCaseId = UUID.fromString("45ae11f6-8e01-47c3-90af-678ec59c4a01");
     when(mockSentSubmission.getCaseId()).thenReturn(mockCaseId);
     when(mockClient.send(any(SendableSubmission.class))).thenReturn(mockSentSubmission);
@@ -44,7 +44,7 @@ class FitConnectSenderServiceTest {
   }
 
   @Test
-  void submitWithoutSuccess() {
+  void testSubmitWithoutSuccess() {
     String errorMessage = "test error";
     when(mockClient.send(any(SendableSubmission.class)))
         .thenThrow(new FitConnectSenderException(errorMessage));
