@@ -4,13 +4,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
 
 import jakarta.servlet.ReadListener;
 import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class CachedBodyServletInputStreamTest {
+class CachedBodyServletInputStreamTest {
 
   private CachedBodyServletInputStream inputStream;
   private byte[] data;
@@ -33,7 +34,9 @@ public class CachedBodyServletInputStreamTest {
   void testIsFinished() throws IOException {
     assertFalse(inputStream.isFinished());
 
-    while (inputStream.read() != -1) {}
+    while (inputStream.read() != -1) {
+      // consuming input stream
+    }
 
     assertTrue(inputStream.isFinished());
   }
@@ -45,19 +48,9 @@ public class CachedBodyServletInputStreamTest {
 
   @Test
   void testSetReadListener() {
+    ReadListener readListener = mock(ReadListener.class);
+
     assertThrows(
-        UnsupportedOperationException.class,
-        () ->
-            inputStream.setReadListener(
-                new ReadListener() {
-                  @Override
-                  public void onDataAvailable() throws IOException {}
-
-                  @Override
-                  public void onAllDataRead() throws IOException {}
-
-                  @Override
-                  public void onError(Throwable throwable) {}
-                }));
+        UnsupportedOperationException.class, () -> inputStream.setReadListener(readListener));
   }
 }
