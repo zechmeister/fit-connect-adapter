@@ -26,6 +26,7 @@ public class CallbackVerificationFilter extends OncePerRequestFilter {
       SenderClient senderClient, @Value("${fitConnect.callbackSecret}") String callbackSecret) {
     this.senderClient = senderClient;
     this.callbackSecret = callbackSecret;
+    filterLogger.debug("callback verification filter initialized");
   }
 
   @Override
