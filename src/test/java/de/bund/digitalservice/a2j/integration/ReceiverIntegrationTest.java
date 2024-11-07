@@ -2,6 +2,8 @@ package de.bund.digitalservice.a2j.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -89,5 +91,6 @@ class ReceiverIntegrationTest {
             String.class);
 
     assertEquals(HttpStatus.UNAUTHORIZED.value(), response.getStatusCode().value());
+    verify(subscriberClient, never()).requestSubmission(any(SubmissionForPickup.class));
   }
 }
