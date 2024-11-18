@@ -32,6 +32,28 @@ brew install lefthook node talisman
 
 This will replace placeholders in the application template and install a couple of Git hooks.
 
+## Generate sources for EGVP SOAP service
+
+enable wsimport task in build.gradle.kts by setting
+
+```
+register("wsimport") {
+        enabled = true
+        ...
+```
+
+Place the webservice wsdl into the resources folder
+
+```
+/src/main/resources/EGVP-WebService.xml
+```
+
+and run
+
+```
+./gradlew clean build
+```
+
 ## Tests
 
 The project has distinct unit and integration test sets.

@@ -71,8 +71,8 @@ tasks {
         finalizedBy(jacocoTestReport)
     }
     register("wsimport") {
-        val destDir by extra("$buildDir/generated/main/java")
         enabled = false
+        val destDir by extra("$buildDir/generated/main/java")
         doLast {
             ant.withGroovyBuilder {
                 mkdir(destDir)
@@ -84,7 +84,7 @@ tasks {
                 "wsimport"(
                     "keep" to true,
                     "sourcedestdir" to destDir,
-                    "wsdl" to "$projectDir/src/main/resources/EGVP-WebService.wsdl",
+                    "wsdl" to "$projectDir/src/main/resources/EGVP-WebService.xml",
                     "verbose" to true,
                 ) {
                     "xjcarg"("value" to "-XautoNameResolution")
