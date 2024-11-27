@@ -132,7 +132,10 @@ tasks {
 }
 
 spotless {
+    encoding("UTF-8")
+    lineEndings = com.diffplug.spotless.LineEnding.UNIX
     java {
+        encoding("Cp1252")
         removeUnusedImports()
         googleJavaFormat()
     }
@@ -150,6 +153,11 @@ spotless {
             "**/*.sh",
             "**/*.yml",
         )
+        targetExclude(
+            "**/gradle.properties",
+            "**/gradle-wrapper.properties",
+        )
+
         prettier(
             mapOf(
                 "prettier" to "2.6.1",
