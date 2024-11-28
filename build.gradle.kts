@@ -26,6 +26,7 @@ java {
 }
 
 configurations { compileOnly { extendsFrom(annotationProcessor.get()) } }
+val jaxws by configurations.creating
 
 repositories { mavenCentral() }
 
@@ -39,13 +40,14 @@ dependencies {
     implementation(libs.spring.boot.starter.web)
     implementation(libs.spring.cloud.starter.kubernetes.client.config)
     implementation(libs.fitko.fitconnect.sdk)
-
+    jaxws(libs.jaxws.tools)
+    implementation(libs.jakarta.xml.ws)
+    implementation(libs.jakarta.xml.bind)
+    jaxws(libs.jakarta.activation)
+    jaxws(libs.sun.xml.ws.jaxws)
     compileOnly(libs.lombok)
-
     developmentOnly(libs.spring.boot.devtools)
-
     annotationProcessor(libs.lombok)
-
     testImplementation(libs.spring.boot.starter.test)
     testImplementation(libs.reactor.test)
     testImplementation(libs.spring.security.test)
@@ -67,6 +69,32 @@ tasks {
         // failing unit tests.
         dependsOn(test)
         finalizedBy(jacocoTestReport)
+    }
+    register("wsimport") {
+        enabled = false
+        val destDir by extra("$buildDir/generated/main/java")
+        doLast {
+            ant.withGroovyBuilder {
+                mkdir(destDir)
+                "taskdef"(
+                    "name" to "wsimport",
+                    "classname" to "com.sun.tools.ws.ant.WsImport",
+                    "classpath" to configurations["jaxws"].asPath,
+                )
+                "wsimport"(
+                    "keep" to true,
+                    "sourcedestdir" to destDir,
+                    "wsdl" to "$projectDir/src/main/resources/EGVP-WebService.xml",
+                    "verbose" to true,
+                ) {
+                    "xjcarg"("value" to "-XautoNameResolution")
+                }
+            }
+        }
+    }
+    compileJava {
+        dependsOn("wsimport")
+        source("$buildDir/generated/main/java")
     }
 
     check {

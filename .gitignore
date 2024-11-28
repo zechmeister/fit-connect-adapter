@@ -46,3 +46,6 @@ lefthook-local.yml
 application-local.yaml
 signing_key.json
 decryption_key.json
+
+### egvp ###
+EGVP-WebService.xml
