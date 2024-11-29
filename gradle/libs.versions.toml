@@ -17,7 +17,7 @@ spring-cloud-starter-kubernetes-client-config = "org.springframework.cloud:sprin
 spring-security-test = { module = "org.springframework.security:spring-security-test" }
 fitko-fitconnect-sdk = "dev.fitko.fitconnect.sdk:client:2.3.5"
 jaxws-tools = "com.sun.xml.ws:jaxws-tools:4.0.3"
-jakarta-xml-ws = "jakarta.xml.ws:jakarta.xml.ws-api:3.0.0"
+jakarta-xml-ws = "jakarta.xml.ws:jakarta.xml.ws-api:4.0.2"
 jakarta-xml-bind = "jakarta.xml.bind:jakarta.xml.bind-api:4.0.0"
 jakarta-activation = "jakarta.activation:jakarta.activation-api:2.0.0"
 sun-xml-ws-jaxws = "com.sun.xml.ws:jaxws-rt:4.0.3"
