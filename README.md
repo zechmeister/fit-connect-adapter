@@ -2,10 +2,8 @@
 
 [![Pipeline](https://github.com/digitalservicebund/a2j-erv-wrapper/actions/workflows/pipeline.yml/badge.svg)](https://github.com/digitalservicebund/a2j-erv-wrapper/actions/workflows/pipeline.yml)
 [![Scan](https://github.com/digitalservicebund/a2j-erv-wrapper/actions/workflows/scan.yml/badge.svg)](https://github.com/digitalservicebund/a2j-erv-wrapper/actions/workflows/scan.yml)
-[![Secrets Check](https://github.com/digitalservicebund/a2j-erv-wrapper/actions/workflows/secrets-check.yml/badge.svg)](https://github.com/digitalservicebund/a2j-erv-wrapper/actions/workflows/secrets-check.yml)
 
-Java service built with
-the [Spring WebFlux reactive stack](https://docs.spring.io/spring-framework/docs/current/reference/html/web-reactive.html#spring-webflux).
+Java SpringBoot service that handles erv for a2j.
 
 ## Prerequisites
 
@@ -24,19 +22,19 @@ brew install lefthook node talisman
 
 ## Getting started
 
-**To get started with development run:**
+**To get started with development, make a copy of the local config:**
 
 ```bash
-./run.sh init
+cp src/main/resources/application-local.yaml.example src/main/resources/application-local.yaml
 ```
 
-This will replace placeholders in the application template and install a couple of Git hooks.
+You'll also need to run spring with the `local` (profile)[https://www.baeldung.com/spring-profiles#5-environment-variable] (how to do that depends on your dev setup).
 
 ## Generate sources for EGVP SOAP service
 
 enable wsimport task in build.gradle.kts by setting
 
-```
+```kotlin
 register("wsimport") {
         enabled = true
         ...
@@ -123,8 +121,7 @@ The hooks are supposed to help you to:
 
 ## Code quality analysis
 
-Continuous code quality analysis is performed in the pipeline upon pushing to trunk; it requires a
-token provided as `SONAR_TOKEN` repository secret that needs to be obtained from https://sonarcloud.io.
+Continuous code quality analysis is performed in the pipeline upon pushing to trunk.
 
 **To run the analysis locally:**
 
@@ -231,11 +228,6 @@ brew install adr-tools
 ```
 
 See https://github.com/npryce/adr-tools regarding usage.
-
-## Slack notifications
-
-Opt in to CI posting notifications for failing jobs to a particular Slack channel by setting a repository secret
-with the name `SLACK_WEBHOOK_URL`, containing a url for [Incoming Webhooks](https://api.slack.com/messaging/webhooks).
 
 ## Contributing
 

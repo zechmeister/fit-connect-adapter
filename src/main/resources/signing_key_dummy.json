@@ -1,0 +1,14 @@
+{
+  "alg": "PS512",
+  "d": "foo",
+  "dp": "foo",
+  "dq": "foo",
+  "e": "AQAB",
+  "key_ops": ["sign"],
+  "kid": "foo",
+  "kty": "RSA",
+  "n": "foo",
+  "p": "foo",
+  "q": "foo",
+  "qi": "foo"
+}

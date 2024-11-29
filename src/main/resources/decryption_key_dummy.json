@@ -1,0 +1,14 @@
+{
+  "alg": "RSA-OAEP-256",
+  "d": "foo",
+  "dp": "foo",
+  "dq": "foo",
+  "e": "AQAB",
+  "key_ops": ["unwrapKey"],
+  "kid": "foo",
+  "kty": "RSA",
+  "n": "foo",
+  "p": "foo",
+  "q": "foo",
+  "qi": "foo"
+}

@@ -5,8 +5,8 @@ fitConnect:
   subscriber:
     clientId: subscriberClientId
     clientSecret: s3cr3t
-    privateDecryptionKeyPath: classpath:decryption_key.json
-    privateSigningKeyPath: classpath:signing_key.json
+    privateDecryptionKeyPath: classpath:decryption_key_dummy.json
+    privateSigningKeyPath: classpath:signing_key_dummy.json
   activeEnvironment: TEST
   submission:
     destination: destinationId
