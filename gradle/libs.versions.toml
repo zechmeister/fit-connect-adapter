@@ -23,7 +23,7 @@ jakarta-activation = "jakarta.activation:jakarta.activation-api:2.0.0"
 sun-xml-ws-jaxws = "com.sun.xml.ws:jaxws-rt:4.0.3"
 [plugins]
 dependency-license-report = "com.github.jk1.dependency-license-report:2.9"
-sonarqube = "org.sonarqube:6.0.0.5145"
+sonarqube = "org.sonarqube:6.0.1.5171"
 spotless = "com.diffplug.spotless:6.25.0"
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
 spring-dependency-management = "io.spring.dependency-management:1.1.6"
