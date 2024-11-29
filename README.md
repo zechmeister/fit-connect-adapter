@@ -1,4 +1,4 @@
-# Java Application Template
+# A2J ERV wrapper
 
 [![Pipeline](https://github.com/digitalservicebund/a2j-erv-wrapper/actions/workflows/pipeline.yml/badge.svg)](https://github.com/digitalservicebund/a2j-erv-wrapper/actions/workflows/pipeline.yml)
 [![Scan](https://github.com/digitalservicebund/a2j-erv-wrapper/actions/workflows/scan.yml/badge.svg)](https://github.com/digitalservicebund/a2j-erv-wrapper/actions/workflows/scan.yml)
@@ -29,6 +29,16 @@ cp src/main/resources/application-local.yaml.example src/main/resources/applicat
 ```
 
 You'll also need to run spring with the `local` (profile)[https://www.baeldung.com/spring-profiles#5-environment-variable] (how to do that depends on your dev setup).
+
+### Replace dummy config
+
+The checked in dummy configuration gets you started. However if you want to use fit-connect properly, you need to register at the (fitko self service portal)[https://portal.auth-testing.fit-connect.fitko.dev/login] and create:
+
+- a sender client (client for `Onlinedienst`),
+- a subscriber client (client for `Verwaltungssystem`, you can use (this tool)[https://git.fitko.de/fit-connect/fit-connect-tools/-/tree/main?ref_type=heads#skript-createselfsignedjwkspy] to create the keys),
+- a destination (`Zustellpunkt`).
+
+Use these to replace the ids and secrets in your `application-local.yaml`.
 
 ## Generate sources for EGVP SOAP service
 
