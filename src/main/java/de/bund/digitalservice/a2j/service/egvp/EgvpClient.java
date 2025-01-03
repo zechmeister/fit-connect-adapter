@@ -1,9 +1,9 @@
 package de.bund.digitalservice.a2j.service.egvp;
 
-import de.bund.digitalservice.a2j.service.egvp.DTO.GetVersionResponse;
-import de.bund.digitalservice.a2j.service.egvp.DTO.ResponseError;
+import de.bund.digitalservice.a2j.service.egvp.DTO.*;
 import java.util.Objects;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 public class EgvpClient {
@@ -13,17 +13,45 @@ public class EgvpClient {
     this.client = client;
   }
 
-  public GetVersionResponse getVersion() throws EgvpClientException, HttpClientErrorException {
+  public GetVersionResponse getVersion() throws EgvpClientException {
     try {
       return this.client.getForEntity("/getVersion", GetVersionResponse.class).getBody();
     } catch (HttpClientErrorException e) {
-      ResponseError error = e.getResponseBodyAs(ResponseError.class);
-
-      if (Objects.isNull(error)) {
-        throw e;
-      } else {
-        throw new EgvpClientException(error.responseCode());
-      }
+      throw parseException(e);
+    } catch (RestClientException e) {
+      throw new EgvpClientException(e.getMessage());
     }
+  }
+
+  public SendMessageResponse sendMessage(SendMessageRequest request) throws EgvpClientException {
+    try {
+      return this.client
+          .postForEntity("/sendMessage", request, SendMessageResponse.class)
+          .getBody();
+    } catch (HttpClientErrorException e) {
+      throw parseException(e);
+    } catch (RestClientException e) {
+      throw new EgvpClientException(e.getMessage());
+    }
+  }
+
+  public MessageDeliveryStatusResponse checkMessageStatus(String customId) {
+
+    try {
+      return this.client.getForObject(
+          "/getMessageDeliveryStatus/{customId}", MessageDeliveryStatusResponse.class, customId);
+    } catch (HttpClientErrorException e) {
+      throw parseException(e);
+    } catch (RestClientException e) {
+      throw new EgvpClientException(e.getMessage());
+    }
+  }
+
+  private EgvpClientException parseException(HttpClientErrorException e) {
+    ResponseError re = e.getResponseBodyAs(ResponseError.class);
+    if (Objects.isNull(re)) {
+      return new EgvpClientException(e.getMessage());
+    }
+    return new EgvpClientException(re.responseCode());
   }
 }
