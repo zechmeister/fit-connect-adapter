@@ -3,6 +3,7 @@ package de.bund.digitalservice.a2j.service.egvp;
 import de.bund.digitalservice.a2j.service.egvp.DTO.*;
 import java.util.Objects;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -13,45 +14,40 @@ public class EgvpClient {
     this.client = client;
   }
 
-  public GetVersionResponse getVersion() throws EgvpClientException {
-    try {
-      return this.client.getForEntity("/getVersion", GetVersionResponse.class).getBody();
-    } catch (HttpClientErrorException e) {
-      throw parseException(e);
-    } catch (RestClientException e) {
-      throw new EgvpClientException(e.getMessage());
-    }
-  }
-
   public SendMessageResponse sendMessage(SendMessageRequest request) throws EgvpClientException {
-    try {
-      return this.client
-          .postForEntity("/sendMessage", request, SendMessageResponse.class)
-          .getBody();
-    } catch (HttpClientErrorException e) {
-      throw parseException(e);
-    } catch (RestClientException e) {
-      throw new EgvpClientException(e.getMessage());
-    }
+    return invoke(
+        () ->
+            this.client
+                .postForEntity("/sendMessage", request, SendMessageResponse.class)
+                .getBody());
   }
 
-  public MessageDeliveryStatusResponse checkMessageStatus(String customId) {
-
-    try {
-      return this.client.getForObject(
-          "/getMessageDeliveryStatus/{customId}", MessageDeliveryStatusResponse.class, customId);
-    } catch (HttpClientErrorException e) {
-      throw parseException(e);
-    } catch (RestClientException e) {
-      throw new EgvpClientException(e.getMessage());
-    }
+  public MessageDeliveryStatusResponse checkMessageStatus(String customId)
+      throws EgvpClientException {
+    return invoke(
+        () ->
+            this.client.getForObject(
+                "/getMessageDeliveryStatus/{customId}",
+                MessageDeliveryStatusResponse.class,
+                customId));
   }
 
-  private EgvpClientException parseException(HttpClientErrorException e) {
-    ResponseError re = e.getResponseBodyAs(ResponseError.class);
-    if (Objects.isNull(re)) {
-      return new EgvpClientException(e.getMessage());
+  interface Operation<T> {
+    T execute() throws RestClientException;
+  }
+
+  private <T> T invoke(Operation<T> operation) throws EgvpClientException {
+    try {
+      return operation.execute();
+    } catch (HttpClientErrorException clientErrorException) {
+      ResponseError re = clientErrorException.getResponseBodyAs(ResponseError.class);
+      if (Objects.isNull(re)) {
+        throw new EgvpClientException(clientErrorException.getMessage(), clientErrorException);
+      }
+      throw new EgvpClientException(re.responseCode(), clientErrorException);
+    } catch (HttpServerErrorException serverErrorException) {
+      throw new EgvpClientException(
+          serverErrorException.getStatusCode().toString(), serverErrorException);
     }
-    return new EgvpClientException(re.responseCode());
   }
 }
