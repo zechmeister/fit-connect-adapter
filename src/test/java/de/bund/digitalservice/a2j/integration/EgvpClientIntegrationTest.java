@@ -40,7 +40,7 @@ public class EgvpClientIntegrationTest {
   }
 
   @Test
-  void checkMessageStatus() {
+  void checkMessageStatus() throws EgvpClientException {
     mockServer
         .expect(requestTo("http://localhost:8088/getMessageDeliveryStatus/12345"))
         .andRespond(
@@ -61,7 +61,7 @@ public class EgvpClientIntegrationTest {
   }
 
   @Test
-  void sendMessage() throws JsonProcessingException {
+  void sendMessage() throws JsonProcessingException, EgvpClientException {
     SendMessageRequest request =
         new SendMessageRequest(
             "receiverId", "mailbox", "subject", "attachmentFilepath", "xjustizFilepath");
