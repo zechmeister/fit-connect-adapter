@@ -22,7 +22,9 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain springSecurityWebFilterChain(HttpSecurity http) throws Exception {
     return http.csrf(
-            csrf -> csrf.ignoringRequestMatchers("/api/sender/submit", "/callbacks/fit-connect"))
+            csrf ->
+                csrf.ignoringRequestMatchers(
+                    "/api/test/**", "/api/sender/submit", "/callbacks/fit-connect"))
         .authorizeHttpRequests(
             requests ->
                 requests

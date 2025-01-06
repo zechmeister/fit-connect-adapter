@@ -8,6 +8,8 @@ import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.bund.digitalservice.a2j.service.egvp.EgvpOutboxService;
+import de.bund.digitalservice.a2j.service.egvp.client.EgvpClientException;
 import dev.fitko.fitconnect.api.domain.model.callback.NewSubmissionsCallback;
 import dev.fitko.fitconnect.api.domain.model.submission.SubmissionForPickup;
 import dev.fitko.fitconnect.api.domain.subscriber.ReceivedSubmission;
@@ -41,6 +43,7 @@ class ReceiverIntegrationTest {
 
   @MockBean private SubscriberClient subscriberClient;
   @MockBean private SenderClient senderClient;
+  @MockBean private EgvpOutboxService egvpService;
 
   @Mock private SubmissionForPickup submissionForPickup;
   @Mock private ReceivedSubmission receivedSubmission;
@@ -64,9 +67,11 @@ class ReceiverIntegrationTest {
   }
 
   @Test
-  void shouldSecureCallbackWithAuthorization() {
+  void shouldSecureCallbackWithAuthorization() throws EgvpClientException {
     when(senderClient.validateCallback(any(), any(), any(), any()))
         .thenReturn(ValidationResult.ok());
+
+    when(egvpService.sendMessage(any())).thenReturn("customId");
 
     ResponseEntity<String> response =
         restTemplate.exchange(
@@ -79,7 +84,7 @@ class ReceiverIntegrationTest {
   }
 
   @Test
-  void shouldSecureCallbackWithoutAuthorization() {
+  void shouldSecureCallbackWithoutAuthorization() throws EgvpClientException {
     when(senderClient.validateCallback(any(), any(), any(), any()))
         .thenReturn(ValidationResult.error("invalid callback"));
 

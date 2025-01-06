@@ -1,6 +1,6 @@
 package de.bund.digitalservice.a2j.config;
 
-import de.bund.digitalservice.a2j.service.egvp.EgvpClient;
+import de.bund.digitalservice.a2j.service.egvp.client.EgvpClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 public class EgvpClientConfig {
 
   @Bean
-  public EgvpClient egvpClient(@Value("egvp.client.baseUri") String baseUri) {
+  public EgvpClient egvpClient(@Value("${egvp.client.baseUri}") String baseUri) {
     RestTemplate restClient =
         new RestTemplateBuilder()
             .errorHandler(new DefaultResponseErrorHandler())
