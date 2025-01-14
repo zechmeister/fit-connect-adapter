@@ -6,7 +6,6 @@ import de.bund.digitalservice.a2j.service.egvp.client.SendMessageRequest;
 import dev.fitko.fitconnect.api.domain.model.submission.SubmissionForPickup;
 import dev.fitko.fitconnect.api.domain.subscriber.ReceivedSubmission;
 import dev.fitko.fitconnect.client.SubscriberClient;
-import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,15 +17,21 @@ public class FitConnectSubscriberService implements SubscriberService {
   private final SubscriberClient client;
   private final EgvpOutboxService egvpService;
   private final String testUserId;
+  private final String testAntragPath;
+  private final String testXjustizPath;
   private static final Logger logger = LoggerFactory.getLogger(FitConnectSubscriberService.class);
 
   public FitConnectSubscriberService(
       SubscriberClient client,
       EgvpOutboxService egvpService,
-      @Value("${egvp.client.testUserId}") String userId) {
+      @Value("${egvp.client.test.userId}") String userId,
+      @Value("${egvp.client.test.antrag}") String testAntragPath,
+      @Value("${egvp.client.test.xJustiz}") String testXjustizPath) {
     this.client = client;
     this.egvpService = egvpService;
     this.testUserId = userId;
+    this.testAntragPath = testAntragPath;
+    this.testXjustizPath = testXjustizPath;
   }
 
   public void pickUpSubmission(SubmissionForPickup submissionForPickup) throws EgvpClientException {
@@ -37,14 +42,10 @@ public class FitConnectSubscriberService implements SubscriberService {
         new SendMessageRequest(
             testUserId,
             testUserId,
-            "mailbox?",
+            "mailbox",
             "testmessage_" + receivedSubmission.getCaseId(),
-            Objects.requireNonNull(
-                    this.getClass().getClassLoader().getResource("test/hello_world.pdf"))
-                .getPath(),
-            Objects.requireNonNull(
-                    this.getClass().getClassLoader().getResource("test/xjustiz_nachricht.xml"))
-                .getPath()));
+            testAntragPath,
+            testXjustizPath));
 
     receivedSubmission.acceptSubmission();
     logger.info("Submission accepted. CaseId: {}", receivedSubmission.getCaseId());

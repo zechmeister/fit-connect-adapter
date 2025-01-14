@@ -5,6 +5,7 @@ import static org.mockito.Mockito.when;
 
 import de.bund.digitalservice.a2j.service.egvp.EgvpOutboxService;
 import de.bund.digitalservice.a2j.service.egvp.client.EgvpClientException;
+import de.bund.digitalservice.a2j.service.egvp.client.SendMessageRequest;
 import dev.fitko.fitconnect.api.domain.model.submission.SubmissionForPickup;
 import dev.fitko.fitconnect.api.domain.subscriber.ReceivedSubmission;
 import dev.fitko.fitconnect.client.SubscriberClient;
@@ -29,16 +30,22 @@ class FitConnectSubscriberServiceTest {
 
   @BeforeEach
   void setup() {
-    this.service = new FitConnectSubscriberService(client, egvpService, "testUserId");
+    this.service =
+        new FitConnectSubscriberService(client, egvpService, "testUserId", "path1", "path2");
   }
 
   @Test
   void testPickUpSubmission() throws IOException, EgvpClientException {
     when(client.requestSubmission(submissionForPickup)).thenReturn(receivedSubmission);
+    UUID caseId = UUID.randomUUID();
     when(receivedSubmission.getSubmissionId()).thenReturn(UUID.randomUUID());
-
+    when(receivedSubmission.getCaseId()).thenReturn(caseId);
     service.pickUpSubmission(submissionForPickup);
 
+    SendMessageRequest expectedRequest =
+        new SendMessageRequest(
+            "testUserId", "testUserId", "mailbox", "testmessage_" + caseId, "path1", "path2");
+    verify(egvpService).sendMessage(expectedRequest);
     verify(client).requestSubmission(submissionForPickup);
     verify(receivedSubmission).acceptSubmission();
   }
