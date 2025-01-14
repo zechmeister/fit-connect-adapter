@@ -3,9 +3,12 @@ package de.bund.digitalservice.a2j.service.subscriber;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import de.bund.digitalservice.a2j.service.egvp.EgvpOutboxService;
+import de.bund.digitalservice.a2j.service.egvp.client.EgvpClientException;
 import dev.fitko.fitconnect.api.domain.model.submission.SubmissionForPickup;
 import dev.fitko.fitconnect.api.domain.subscriber.ReceivedSubmission;
 import dev.fitko.fitconnect.client.SubscriberClient;
+import java.io.IOException;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,17 +22,18 @@ class FitConnectSubscriberServiceTest {
   private SubscriberService service;
 
   @MockBean SubscriberClient client;
+  @MockBean EgvpOutboxService egvpService;
 
   @Mock ReceivedSubmission receivedSubmission;
   @Mock SubmissionForPickup submissionForPickup;
 
   @BeforeEach
   void setup() {
-    this.service = new FitConnectSubscriberService(client);
+    this.service = new FitConnectSubscriberService(client, egvpService, "testUserId");
   }
 
   @Test
-  void testPickUpSubmission() {
+  void testPickUpSubmission() throws IOException, EgvpClientException {
     when(client.requestSubmission(submissionForPickup)).thenReturn(receivedSubmission);
     when(receivedSubmission.getSubmissionId()).thenReturn(UUID.randomUUID());
 

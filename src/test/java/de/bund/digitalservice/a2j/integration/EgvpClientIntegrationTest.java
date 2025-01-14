@@ -6,11 +6,11 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.bund.digitalservice.a2j.service.egvp.DTO.MessageDeliveryStatusResponse;
-import de.bund.digitalservice.a2j.service.egvp.DTO.SendMessageRequest;
-import de.bund.digitalservice.a2j.service.egvp.DTO.SendMessageResponse;
-import de.bund.digitalservice.a2j.service.egvp.EgvpClient;
-import de.bund.digitalservice.a2j.service.egvp.EgvpClientException;
+import de.bund.digitalservice.a2j.service.egvp.client.EgvpClient;
+import de.bund.digitalservice.a2j.service.egvp.client.EgvpClientException;
+import de.bund.digitalservice.a2j.service.egvp.client.MessageDeliveryStatusResponse;
+import de.bund.digitalservice.a2j.service.egvp.client.SendMessageRequest;
+import de.bund.digitalservice.a2j.service.egvp.client.SendMessageResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -42,7 +42,7 @@ public class EgvpClientIntegrationTest {
   @Test
   void checkMessageStatus() throws EgvpClientException {
     mockServer
-        .expect(requestTo("http://localhost:8088/getMessageDeliveryStatus/12345"))
+        .expect(requestTo("http://localhost:8088/getMessageDeliveryStatus/userId/12345"))
         .andRespond(
             withSuccess(
                 """
@@ -57,17 +57,17 @@ public class EgvpClientIntegrationTest {
     MessageDeliveryStatusResponse expectedResponse =
         new MessageDeliveryStatusResponse("MSG_ID_123", true, "", "path_to_file.pdf");
 
-    assertEquals(expectedResponse, client.checkMessageStatus("12345"));
+    assertEquals(expectedResponse, client.checkMessageStatus("userId", "12345"));
   }
 
   @Test
   void sendMessage() throws JsonProcessingException, EgvpClientException {
     SendMessageRequest request =
         new SendMessageRequest(
-            "receiverId", "mailbox", "subject", "attachmentFilepath", "xjustizFilepath");
+            "userId", "receiverId", "mailbox", "subject", "attachmentFilepath", "xjustizFilepath");
 
     mockServer
-        .expect(requestTo("http://localhost:8088/sendMessage"))
+        .expect(requestTo("http://localhost:8088/sendMessage/userId"))
         .andExpect(method(HttpMethod.POST))
         .andExpect(content().json(new ObjectMapper().writeValueAsString(request)))
         .andRespond(
@@ -87,10 +87,10 @@ public class EgvpClientIntegrationTest {
   void sendMessageClientFailure() throws JsonProcessingException {
     SendMessageRequest request =
         new SendMessageRequest(
-            "receiverId", "mailbox", "subject", "attachmentFilepath", "xjustizFilepath");
+            "userId", "receiverId", "mailbox", "subject", "attachmentFilepath", "xjustizFilepath");
 
     mockServer
-        .expect(requestTo("http://localhost:8088/sendMessage"))
+        .expect(requestTo("http://localhost:8088/sendMessage/userId"))
         .andExpect(method(HttpMethod.POST))
         .andExpect(content().json(new ObjectMapper().writeValueAsString(request)))
         .andRespond(
@@ -112,10 +112,10 @@ public class EgvpClientIntegrationTest {
   void sendMessageServerFailure() throws JsonProcessingException {
     SendMessageRequest request =
         new SendMessageRequest(
-            "receiverId", "mailbox", "subject", "attachmentFilepath", "xjustizFilepath");
+            "userId", "receiverId", "mailbox", "subject", "attachmentFilepath", "xjustizFilepath");
 
     mockServer
-        .expect(requestTo("http://localhost:8088/sendMessage"))
+        .expect(requestTo("http://localhost:8088/sendMessage/userId"))
         .andExpect(method(HttpMethod.POST))
         .andExpect(content().json(new ObjectMapper().writeValueAsString(request)))
         .andRespond(withServerError());

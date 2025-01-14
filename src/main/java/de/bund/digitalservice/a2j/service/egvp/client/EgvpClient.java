@@ -1,11 +1,7 @@
-package de.bund.digitalservice.a2j.service.egvp;
+package de.bund.digitalservice.a2j.service.egvp.client;
 
-import de.bund.digitalservice.a2j.service.egvp.DTO.*;
 import java.util.Objects;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.*;
 
 public class EgvpClient {
   private final RestTemplate client;
@@ -18,17 +14,19 @@ public class EgvpClient {
     return invoke(
         () ->
             this.client
-                .postForEntity("/sendMessage", request, SendMessageResponse.class)
+                .postForEntity(
+                    "/sendMessage/{userId}", request, SendMessageResponse.class, request.userId())
                 .getBody());
   }
 
-  public MessageDeliveryStatusResponse checkMessageStatus(String customId)
+  public MessageDeliveryStatusResponse checkMessageStatus(String userId, String customId)
       throws EgvpClientException {
     return invoke(
         () ->
             this.client.getForObject(
-                "/getMessageDeliveryStatus/{customId}",
+                "/getMessageDeliveryStatus/{userId}/{customId}",
                 MessageDeliveryStatusResponse.class,
+                userId,
                 customId));
   }
 
@@ -48,6 +46,9 @@ public class EgvpClient {
     } catch (HttpServerErrorException serverErrorException) {
       throw new EgvpClientException(
           serverErrorException.getStatusCode().toString(), serverErrorException);
+    } catch (RestClientException ex) {
+
+      throw new EgvpClientException(ex.getMessage().toString(), ex);
     }
   }
 }

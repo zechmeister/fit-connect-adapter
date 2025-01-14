@@ -16,5 +16,9 @@ fitConnect:
     jsonUri: https://schema.fitko.de/fim/s17000717_1.0.schema.json
   callbackSecret: s3cr3t
 egvp:
+  outbox:
+    path: 'path/to/outbox/'
+  inbox:
+    path: 'path/to/inbox/'
   client:
-    baseUri: "localhost:8088"
+    baseUri: 'localhost:8088'
