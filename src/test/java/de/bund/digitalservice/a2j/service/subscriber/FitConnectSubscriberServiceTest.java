@@ -29,7 +29,7 @@ class FitConnectSubscriberServiceTest {
 
   @BeforeEach
   void setup() {
-    this.service = new FitConnectSubscriberService(client, egvpService);
+    this.service = new FitConnectSubscriberService(client, egvpService, "testUserId");
   }
 
   @Test
