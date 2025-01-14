@@ -25,7 +25,7 @@ public class EgvpOutboxService {
 
   private static final Logger logger = LoggerFactory.getLogger(EgvpOutboxService.class);
 
-  EgvpOutboxService(EgvpClient client, MessagesInTransitRepository repository) {
+  public EgvpOutboxService(EgvpClient client, MessagesInTransitRepository repository) {
     this.client = client;
     this.repository = repository;
   }

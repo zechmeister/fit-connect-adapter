@@ -20,5 +20,8 @@ management:
     port: 8081
 egvp:
   client:
-    testUserId:
+    test:
+      userId:
+      antrag:
+      xJustiz:
     baseUri:
