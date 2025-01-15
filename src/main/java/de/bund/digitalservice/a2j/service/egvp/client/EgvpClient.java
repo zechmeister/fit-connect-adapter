@@ -48,7 +48,7 @@ public class EgvpClient {
           serverErrorException.getStatusCode().toString(), serverErrorException);
     } catch (RestClientException ex) {
 
-      throw new EgvpClientException(ex.getMessage().toString(), ex);
+      throw new EgvpClientException(ex.getMessage(), ex);
     }
   }
 }

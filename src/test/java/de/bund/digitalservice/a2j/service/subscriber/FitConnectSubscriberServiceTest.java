@@ -9,7 +9,6 @@ import de.bund.digitalservice.a2j.service.egvp.client.SendMessageRequest;
 import dev.fitko.fitconnect.api.domain.model.submission.SubmissionForPickup;
 import dev.fitko.fitconnect.api.domain.subscriber.ReceivedSubmission;
 import dev.fitko.fitconnect.client.SubscriberClient;
-import java.io.IOException;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,7 +34,7 @@ class FitConnectSubscriberServiceTest {
   }
 
   @Test
-  void testPickUpSubmission() throws IOException, EgvpClientException {
+  void testPickUpSubmission() throws EgvpClientException {
     when(client.requestSubmission(submissionForPickup)).thenReturn(receivedSubmission);
     UUID caseId = UUID.randomUUID();
     when(receivedSubmission.getSubmissionId()).thenReturn(UUID.randomUUID());

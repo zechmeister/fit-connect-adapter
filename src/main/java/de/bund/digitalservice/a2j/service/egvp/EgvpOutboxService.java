@@ -52,6 +52,7 @@ public class EgvpOutboxService {
           try {
             MessageDeliveryStatusResponse response =
                 this.client.checkMessageStatus(m.userId(), m.customId());
+
             if (response.delivered()) {
               deliveredMessages.add(m);
               // TODO send confirmation file to user

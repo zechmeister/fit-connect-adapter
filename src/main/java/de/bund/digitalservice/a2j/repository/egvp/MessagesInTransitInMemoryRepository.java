@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MessagesInTransitInMemoryRepository implements MessagesInTransitRepository {
-  public Set<MessageInTransit> messages = new HashSet<>();
+  private final Set<MessageInTransit> messages = new HashSet<>();
 
   public Set<MessageInTransit> getAll() {
     return messages;

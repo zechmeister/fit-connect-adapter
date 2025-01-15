@@ -26,7 +26,7 @@ import org.springframework.web.client.RestTemplate;
 // only extend with SpringExtension to avoid loading the whole Application context
 @ExtendWith(SpringExtension.class)
 @Tag("integration")
-public class EgvpClientIntegrationTest {
+class EgvpClientIntegrationTest {
 
   private EgvpClient client;
 

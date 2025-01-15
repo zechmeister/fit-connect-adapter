@@ -13,12 +13,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
-public class EgvpOutboxServiceTest {
+class EgvpOutboxServiceTest {
 
   @MockBean private EgvpClient egvpClient;
 
   @Test
-  public void sendMessageTest() throws EgvpClientException {
+  void sendMessageTest() throws EgvpClientException {
     MessagesInTransitRepository repo = new MessagesInTransitInMemoryRepository();
     EgvpOutboxService service = new EgvpOutboxService(egvpClient, repo);
 
@@ -40,7 +40,7 @@ public class EgvpOutboxServiceTest {
   }
 
   @Test
-  public void retrieveDeliveredMessage() throws EgvpClientException {
+  void retrieveDeliveredMessage() throws EgvpClientException {
     MessagesInTransitRepository repo = new MessagesInTransitInMemoryRepository();
     repo.add(new MessageInTransit("userId", "customId", "mailboxId"));
 
@@ -54,7 +54,7 @@ public class EgvpOutboxServiceTest {
   }
 
   @Test
-  public void keepPendingMessagesInTransit() throws EgvpClientException {
+  void keepPendingMessagesInTransit() throws EgvpClientException {
     MessagesInTransitRepository repo = new MessagesInTransitInMemoryRepository();
     MessageInTransit msg = new MessageInTransit("userId", "customId", "mailboxId");
     repo.add(msg);
@@ -68,7 +68,7 @@ public class EgvpOutboxServiceTest {
   }
 
   @Test
-  public void deleteInTransitMessagesOnFailure() throws EgvpClientException {
+  void deleteInTransitMessagesOnFailure() throws EgvpClientException {
     MessagesInTransitRepository repo = new MessagesInTransitInMemoryRepository();
     MessageInTransit msg = new MessageInTransit("userId", "customId", "mailboxId");
     repo.add(msg);

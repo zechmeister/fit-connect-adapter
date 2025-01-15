@@ -84,7 +84,7 @@ class ReceiverIntegrationTest {
   }
 
   @Test
-  void shouldSecureCallbackWithoutAuthorization() throws EgvpClientException {
+  void shouldSecureCallbackWithoutAuthorization() {
     when(senderClient.validateCallback(any(), any(), any(), any()))
         .thenReturn(ValidationResult.error("invalid callback"));
 
