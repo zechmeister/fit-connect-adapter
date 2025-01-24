@@ -44,16 +44,11 @@ Use these to replace the ids and secrets in your `application-local.yaml`.
 
 enable wsimport task in build.gradle.kts by setting
 
-```kotlin
+```
 register("wsimport") {
-        enabled = true
-        ...
-```
-
-Place the webservice wsdl into the resources folder
-
-```
-/src/main/resources/EGVP-WebService.xml
+    enabled = true
+    ...
+}
 ```
 
 and run

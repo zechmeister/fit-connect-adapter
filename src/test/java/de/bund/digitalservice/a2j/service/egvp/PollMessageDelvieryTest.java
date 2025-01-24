@@ -13,38 +13,16 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
-class EgvpOutboxServiceTest {
+class PollMessageDelvieryTest {
 
   @MockBean private EgvpClient egvpClient;
-
-  @Test
-  void sendMessageTest() throws EgvpClientException {
-    MessagesInTransitRepository repo = new MessagesInTransitInMemoryRepository();
-    EgvpOutboxService service = new EgvpOutboxService(egvpClient, repo);
-
-    SendMessageRequest request =
-        new SendMessageRequest(
-            "userId",
-            "receiverId",
-            "mailBoxId",
-            "testSubject",
-            "attachmentPath",
-            "xJustizFilePath");
-    String expectedCustomId = "newCustomId";
-    when(this.egvpClient.sendMessage(request))
-        .thenReturn(new SendMessageResponse(expectedCustomId));
-
-    Assertions.assertEquals(expectedCustomId, service.sendMessage(request));
-    Assertions.assertTrue(
-        repo.getAll().contains(new MessageInTransit("userId", expectedCustomId, "mailBoxId")));
-  }
 
   @Test
   void retrieveDeliveredMessage() throws EgvpClientException {
     MessagesInTransitRepository repo = new MessagesInTransitInMemoryRepository();
     repo.add(new MessageInTransit("userId", "customId", "mailboxId"));
 
-    EgvpOutboxService service = new EgvpOutboxService(egvpClient, repo);
+    PollMessageDelivery service = new PollMessageDelivery(egvpClient, repo);
     when(egvpClient.checkMessageStatus("userId", "customId"))
         .thenReturn(
             new MessageDeliveryStatusResponse("messageId", true, "", "pathToConfirmation.zip"));
@@ -59,7 +37,7 @@ class EgvpOutboxServiceTest {
     MessageInTransit msg = new MessageInTransit("userId", "customId", "mailboxId");
     repo.add(msg);
 
-    EgvpOutboxService service = new EgvpOutboxService(egvpClient, repo);
+    PollMessageDelivery service = new PollMessageDelivery(egvpClient, repo);
     when(egvpClient.checkMessageStatus("userId", "customId"))
         .thenReturn(new MessageDeliveryStatusResponse("", false, "WS_UNPROCESSABLE", ""));
     service.retrieveDeliveryStatus();
@@ -73,7 +51,7 @@ class EgvpOutboxServiceTest {
     MessageInTransit msg = new MessageInTransit("userId", "customId", "mailboxId");
     repo.add(msg);
 
-    EgvpOutboxService service = new EgvpOutboxService(egvpClient, repo);
+    PollMessageDelivery service = new PollMessageDelivery(egvpClient, repo);
     when(egvpClient.checkMessageStatus("userId", "customId"))
         .thenThrow(new EgvpClientException("GENERAL_ERROR"));
 

@@ -3,7 +3,7 @@ package de.bund.digitalservice.a2j.service.subscriber;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import de.bund.digitalservice.a2j.service.egvp.EgvpOutboxService;
+import de.bund.digitalservice.a2j.service.egvp.client.EgvpClient;
 import de.bund.digitalservice.a2j.service.egvp.client.EgvpClientException;
 import de.bund.digitalservice.a2j.service.egvp.client.SendMessageRequest;
 import dev.fitko.fitconnect.api.domain.model.submission.SubmissionForPickup;
@@ -22,7 +22,7 @@ class FitConnectSubscriberServiceTest {
   private SubscriberService service;
 
   @MockBean SubscriberClient client;
-  @MockBean EgvpOutboxService egvpService;
+  @MockBean EgvpClient egvpClient;
 
   @Mock ReceivedSubmission receivedSubmission;
   @Mock SubmissionForPickup submissionForPickup;
@@ -30,7 +30,7 @@ class FitConnectSubscriberServiceTest {
   @BeforeEach
   void setup() {
     this.service =
-        new FitConnectSubscriberService(client, egvpService, "testUserId", "path1", "path2");
+        new FitConnectSubscriberService(client, egvpClient, "testUserId", "path1", "path2");
   }
 
   @Test
@@ -44,7 +44,7 @@ class FitConnectSubscriberServiceTest {
     SendMessageRequest expectedRequest =
         new SendMessageRequest(
             "testUserId", "testUserId", "mailbox", "testmessage_" + caseId, "path1", "path2");
-    verify(egvpService).sendMessage(expectedRequest);
+    verify(egvpClient).sendMessage(expectedRequest);
     verify(client).requestSubmission(submissionForPickup);
     verify(receivedSubmission).acceptSubmission();
   }

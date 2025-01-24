@@ -5,37 +5,33 @@ import de.bund.digitalservice.a2j.repository.egvp.MessagesInTransitRepository;
 import de.bund.digitalservice.a2j.service.egvp.client.EgvpClient;
 import de.bund.digitalservice.a2j.service.egvp.client.EgvpClientException;
 import de.bund.digitalservice.a2j.service.egvp.client.MessageDeliveryStatusResponse;
-import de.bund.digitalservice.a2j.service.egvp.client.SendMessageRequest;
-import de.bund.digitalservice.a2j.service.egvp.client.SendMessageResponse;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
-public class EgvpOutboxService {
+@Configuration
+@EnableScheduling
+@ConditionalOnProperty("egvp.pollDeliveryStatus")
+public class PollMessageDelivery {
 
   private final EgvpClient client;
 
   private final MessagesInTransitRepository repository;
 
-  private static final Logger logger = LoggerFactory.getLogger(EgvpOutboxService.class);
+  private static final Logger logger = LoggerFactory.getLogger(PollMessageDelivery.class);
 
-  public EgvpOutboxService(EgvpClient client, MessagesInTransitRepository repository) {
+  public PollMessageDelivery(EgvpClient client, MessagesInTransitRepository repository) {
     this.client = client;
     this.repository = repository;
-  }
-
-  public String sendMessage(SendMessageRequest request) throws EgvpClientException {
-
-    SendMessageResponse response = this.client.sendMessage(request);
-    repository.add(
-        new MessageInTransit(request.userId(), response.customId(), request.bundIdMailbox()));
-    return response.customId();
   }
 
   @Scheduled(fixedRate = 5000)

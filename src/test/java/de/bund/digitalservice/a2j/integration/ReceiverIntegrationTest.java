@@ -8,8 +8,9 @@ import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.bund.digitalservice.a2j.service.egvp.EgvpOutboxService;
+import de.bund.digitalservice.a2j.service.egvp.client.EgvpClient;
 import de.bund.digitalservice.a2j.service.egvp.client.EgvpClientException;
+import de.bund.digitalservice.a2j.service.egvp.client.SendMessageResponse;
 import dev.fitko.fitconnect.api.domain.model.callback.NewSubmissionsCallback;
 import dev.fitko.fitconnect.api.domain.model.submission.SubmissionForPickup;
 import dev.fitko.fitconnect.api.domain.subscriber.ReceivedSubmission;
@@ -43,7 +44,7 @@ class ReceiverIntegrationTest {
 
   @MockBean private SubscriberClient subscriberClient;
   @MockBean private SenderClient senderClient;
-  @MockBean private EgvpOutboxService egvpService;
+  @MockBean private EgvpClient egvpService;
 
   @Mock private SubmissionForPickup submissionForPickup;
   @Mock private ReceivedSubmission receivedSubmission;
@@ -71,7 +72,7 @@ class ReceiverIntegrationTest {
     when(senderClient.validateCallback(any(), any(), any(), any()))
         .thenReturn(ValidationResult.ok());
 
-    when(egvpService.sendMessage(any())).thenReturn("customId");
+    when(egvpService.sendMessage(any())).thenReturn(new SendMessageResponse("customId"));
 
     ResponseEntity<String> response =
         restTemplate.exchange(

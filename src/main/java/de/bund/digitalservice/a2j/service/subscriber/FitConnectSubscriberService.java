@@ -1,6 +1,6 @@
 package de.bund.digitalservice.a2j.service.subscriber;
 
-import de.bund.digitalservice.a2j.service.egvp.EgvpOutboxService;
+import de.bund.digitalservice.a2j.service.egvp.client.EgvpClient;
 import de.bund.digitalservice.a2j.service.egvp.client.EgvpClientException;
 import de.bund.digitalservice.a2j.service.egvp.client.SendMessageRequest;
 import dev.fitko.fitconnect.api.domain.model.submission.SubmissionForPickup;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class FitConnectSubscriberService implements SubscriberService {
 
   private final SubscriberClient client;
-  private final EgvpOutboxService egvpService;
+  private final EgvpClient egvpClient;
   private final String testUserId;
   private final String testAntragPath;
   private final String testXjustizPath;
@@ -23,12 +23,12 @@ public class FitConnectSubscriberService implements SubscriberService {
 
   public FitConnectSubscriberService(
       SubscriberClient client,
-      EgvpOutboxService egvpService,
+      EgvpClient egvpClient,
       @Value("${egvp.client.test.userId}") String userId,
       @Value("${egvp.client.test.antrag}") String testAntragPath,
       @Value("${egvp.client.test.xJustiz}") String testXjustizPath) {
     this.client = client;
-    this.egvpService = egvpService;
+    this.egvpClient = egvpClient;
     this.testUserId = userId;
     this.testAntragPath = testAntragPath;
     this.testXjustizPath = testXjustizPath;
@@ -38,7 +38,7 @@ public class FitConnectSubscriberService implements SubscriberService {
     ReceivedSubmission receivedSubmission = client.requestSubmission(submissionForPickup);
     logger.info("Submission requested. SubmissionId: {}", submissionForPickup.getSubmissionId());
 
-    this.egvpService.sendMessage(
+    this.egvpClient.sendMessage(
         new SendMessageRequest(
             testUserId,
             testUserId,
