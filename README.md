@@ -40,23 +40,6 @@ The checked in dummy configuration gets you started. However if you want to use 
 
 Use these to replace the ids and secrets in your `application-local.yaml`.
 
-## Generate sources for EGVP SOAP service
-
-enable wsimport task in build.gradle.kts by setting
-
-```
-register("wsimport") {
-    enabled = true
-    ...
-}
-```
-
-and run
-
-```
-./gradlew clean build
-```
-
 ## Tests
 
 The project has distinct unit and integration test sets.
