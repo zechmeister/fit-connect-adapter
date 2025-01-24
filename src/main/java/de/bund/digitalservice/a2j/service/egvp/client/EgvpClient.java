@@ -10,6 +10,18 @@ public class EgvpClient {
     this.client = client;
   }
 
+  /**
+   * Get Version of connected egvp enterprise instance. Mostly used for testing purposes to check if
+   * a connection can be established
+   *
+   * @return current Version of connected egvp instance
+   * @throws EgvpClientException
+   */
+  public GetVersionResponse getVersion() throws EgvpClientException {
+    return invoke(() -> this.client.getForEntity("/getVersion", GetVersionResponse.class))
+        .getBody();
+  }
+
   public SendMessageResponse sendMessage(SendMessageRequest request) throws EgvpClientException {
     return invoke(
         () ->

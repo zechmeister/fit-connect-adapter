@@ -6,11 +6,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.bund.digitalservice.a2j.service.egvp.client.EgvpClient;
-import de.bund.digitalservice.a2j.service.egvp.client.EgvpClientException;
-import de.bund.digitalservice.a2j.service.egvp.client.MessageDeliveryStatusResponse;
-import de.bund.digitalservice.a2j.service.egvp.client.SendMessageRequest;
-import de.bund.digitalservice.a2j.service.egvp.client.SendMessageResponse;
+import de.bund.digitalservice.a2j.service.egvp.client.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -37,6 +33,23 @@ class EgvpClientIntegrationTest {
     RestTemplate restTemplate = new RestTemplateBuilder().rootUri("http://localhost:8088").build();
     this.client = new EgvpClient(restTemplate);
     this.mockServer = MockRestServiceServer.createServer(restTemplate);
+  }
+
+  @Test
+  void getVersion() throws EgvpClientException {
+    mockServer
+        .expect(requestTo("http://localhost:8088/getVersion"))
+        .andRespond(
+            withSuccess(
+                """
+                                                {
+                                                  "version":"5.2.1"
+                                                }
+                                                """,
+                MediaType.APPLICATION_JSON));
+    GetVersionResponse expectedResponse = new GetVersionResponse("5.2.1");
+
+    assertEquals(expectedResponse, client.getVersion());
   }
 
   @Test
