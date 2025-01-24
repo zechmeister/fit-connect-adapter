@@ -49,7 +49,7 @@ public class PollMessageDelivery {
             MessageDeliveryStatusResponse response =
                 this.client.checkMessageStatus(m.userId(), m.customId());
 
-            if (response.delivered()) {
+            if (Boolean.TRUE.equals(response.delivered())) {
               deliveredMessages.add(m);
               // TODO send confirmation file to user
             } else {
