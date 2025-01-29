@@ -8,8 +8,8 @@ Java SpringBoot service that handles erv for a2j.
 The erv wrapper connects to two external services in its current state. FitConnect and an EGVP Enterprise instance.
 The interface of the EGVP-Enterprise instance is wrapped in a Restful http client.
 
-
 Currently, the flow of a submission is supposed to flow like the graph describes:
+
 ```mermaid
 sequenceDiagram
     participant A2J
@@ -38,8 +38,9 @@ sequenceDiagram
 ```
 
 ## Test Deployment
+
 The Erv Wrapper and EGVPClient must share a filesystem to reference files to be sent.
-Polling messages is disabled by default. Run the wrapper with ```--egvp.pollDeliveryStatus``` to enable polling to
+Polling messages is disabled by default. Run the wrapper with `--egvp.pollDeliveryStatus` to enable polling to
 retrieve message delivery confirmations.
 
 ## Prerequisites
