@@ -1,7 +1,7 @@
 [versions]
 # @keep
 jacoco = "0.8.12"
-spring-boot = "3.3.5"
+spring-boot = "3.4.2"
 
 [libraries]
 archunit-junit5 = "com.tngtech.archunit:archunit-junit5:1.3.0"
@@ -13,7 +13,9 @@ spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-
 spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security" }
 spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
-spring-cloud-starter-kubernetes-client-config = "org.springframework.cloud:spring-cloud-starter-kubernetes-client-config:3.1.4"
+spring-cloud-starter-kubernetes-client-config = "org.springframework.cloud:spring-cloud-starter-kubernetes-client-config:3.2.0"
+#pin transient client-config protobuf dependency version to avoid CVE-2024-7254
+google-java-protobuf = "com.google.protobuf:protobuf-java:3.25.5"
 spring-security-test = { module = "org.springframework.security:spring-security-test" }
 fitko-fitconnect-sdk = "dev.fitko.fitconnect.sdk:client:2.5.0"
 [plugins]

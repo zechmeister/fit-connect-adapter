@@ -2,7 +2,6 @@ import com.adarshr.gradle.testlogger.theme.ThemeType
 import com.github.jk1.license.filter.LicenseBundleNormalizer
 
 buildscript { repositories { mavenCentral() } }
-
 plugins {
     alias(libs.plugins.spring.boot)
     alias(libs.plugins.spring.dependency.management)
@@ -38,6 +37,7 @@ dependencies {
     implementation(libs.spring.boot.starter.security)
     implementation(libs.spring.boot.starter.web)
     implementation(libs.spring.cloud.starter.kubernetes.client.config)
+    implementation(libs.google.java.protobuf)
     implementation(libs.fitko.fitconnect.sdk)
     compileOnly(libs.lombok)
     developmentOnly(libs.spring.boot.devtools)
