@@ -5,6 +5,43 @@
 
 Java SpringBoot service that handles erv for a2j.
 
+The erv wrapper connects to two external services in its current state. FitConnect and an EGVP Enterprise instance.
+The interface of the EGVP-Enterprise instance is wrapped in a Restful http client.
+
+
+Currently, the flow of a submission is supposed to flow like the graph describes:
+```mermaid
+sequenceDiagram
+    participant A2J
+    participant ErvWrapper
+    participant EGVPClient
+    participant FitConnect
+    A2J->>ErvWrapper: submit
+    activate ErvWrapper
+    ErvWrapper->>FitConnect: sendSubmission
+    deactivate ErvWrapper
+    FitConnect->>+ErvWrapper: incomingSubmissions
+    ErvWrapper-->>-EGVPClient: sendMessage
+    activate EGVPClient
+    alt poll until delviery confirmed
+    ErvWrapper->>EGVPClient: check Delviery Status
+    activate ErvWrapper
+    EGVPClient->>ErvWrapper: delivery Pending
+    deactivate ErvWrapper
+    else
+    EGVPClient->>ErvWrapper: Message Delivered
+    deactivate EGVPClient
+    activate ErvWrapper
+    ErvWrapper->>FitConnect: send confirmation to BundId
+    deactivate ErvWrapper
+    end
+```
+
+## Test Deployment
+The Erv Wrapper and EGVPClient must share a filesystem to reference files to be sent.
+Polling messages is disabled by default. Run the wrapper with ```--egvp.pollDeliveryStatus``` to enable polling to
+retrieve message delivery confirmations.
+
 ## Prerequisites
 
 Java 21, Docker for building + running the containerized application:
